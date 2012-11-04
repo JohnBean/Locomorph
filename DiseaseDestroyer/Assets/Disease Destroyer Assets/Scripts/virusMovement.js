@@ -18,20 +18,14 @@ var yDir: float;
 
 // Use this for initialization
 function Start () {
-	// rigidbody.rotation.y=90;
-	// transform.rotation.y=90;
-	//var virusClone : Rigidbody = Instantiate(virus, transform.position, transform.rotation);
 
-    // You can also acccess other components / scripts of the clone
-    
-        //clone = Instantiate(virus, transform.position+30, transform.rotation);
 }
 
 // Update is called once per frame
 function Update () {
 	// change to random direction at random intervals
     if (Time.time >= tChange){
-       randomDirection();   
+       //randomDirection();   
        nearestCell();    
     }
     if (transform.position.x >= maxX){ 
@@ -50,13 +44,9 @@ function Update () {
     	yDir= Mathf.Abs(Random.Range(0,2));
     	transform.position.y=minY+1;
     } 
-    transform.Translate(Vector3(xDir,yDir,0) * speed * Time.deltaTime);
+    transform.Translate(Vector3(xDir,0,yDir) * speed * Time.deltaTime);
     transform.position.z=0;   
-    var angle = 90.0;
-    var axis = Vector3(90,90,90);
-    //rigidbody.rotation.ToAngleAxis(angle,axis);
-    //transform.rotation.;
-   // transform.up = rigidbody.velocity; 
+
 }
 function randomDirection(){
 	randomDir(.5,1.5);
@@ -75,29 +65,43 @@ function nearestCell(){
     var position = transform.position; 
     // Iterate through them and find the closest one
     for (var go : GameObject in gos)  {
-    	print(go.transform.position);
+    	
         var diff = (go.transform.position - position);
+
         var curDistance = diff.sqrMagnitude; 
         if (curDistance < distance) { 
             closest = go; 
             distance = curDistance; 
         } 
     }
-   // print("Closest: " + closest.name);
-    //angle = Mathf.Atan2(closest.transform.position.x, closest.transform.position.y) * Mathf.Rad2Deg;
-  //  transform.rotation = Quaternion.Euler(Vector3(angle, 0,0 ));
-    //rigidbody..LookAt(closest.position);
-   // rigidbody.AddForce(transform.forward *speed * Time.deltaTime);
+    if(closest!=null){
+    	if(closest.transform.position.y<position.y){
+    		yDir=Random.Range(0.0,2.0);
+    	}
+    	else if(closest.transform.position.y>position.y){
+    		yDir=Random.Range(-2.0,0.0);
+    	}
+    	if(closest.transform.position.x<position.x){
+    		xDir=Random.Range(-2.0,0.0);
+    	}
+   		else if(closest.transform.position.x>position.x){
+    		xDir=Random.Range(0.0,2.0);
+   	 	}
+    }
+    Random.seed=position.x;
     tChange = Time.time + Random.Range(1,2);
 }
 function OnCollisionEnter( collision : Collision )
 {
     print(collision.gameObject.name);
-    Destroy (gameObject);
+    if(collision.gameObject.name=="Player"){
+    	Destroy (gameObject);
 
 // Removes this script instance from the game object
-Destroy (this);
+		Destroy (this);
 
 // Removes the rigidbody from the game object
-Destroy (rigidbody);
+		Destroy (rigidbody);
+    }
+    
 }
