@@ -17,7 +17,7 @@ function Start () {
 function Update () {
 	// change to random direction at random intervals
     if (Time.time >= tChange){
-       //randomDirection();   
+       randomDirection();   
        nearestCell();    
     }
     if (transform.position.x >= maxX){ 
@@ -36,7 +36,7 @@ function Update () {
     	yDir= Mathf.Abs(yDir);
     	transform.position.y=minY;
     } 
-   // transform.Translate(Vector3(xDir,0,yDir) * speed * Time.deltaTime);
+    transform.Translate(Vector3(xDir,0,yDir) * speed * Time.deltaTime);
     transform.position.z=0;    
 }
 function randomDirection(){
