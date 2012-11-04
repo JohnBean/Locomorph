@@ -83,3 +83,14 @@ function nearestCell(){
    // rigidbody.AddForce(transform.forward *speed * Time.deltaTime);
     tChange = Time.time + Random.Range(1,2);
 }
+function OnCollisionEnter( collision : Collision )
+{
+    print(collision.gameObject.name);
+    Destroy (gameObject);
+
+// Removes this script instance from the game object
+Destroy (this);
+
+// Removes the rigidbody from the game object
+Destroy (rigidbody);
+}
