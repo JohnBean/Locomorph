@@ -1,12 +1,21 @@
+public var maxX = 240;
+public var minX = -240;
+public var maxY = 240;
+public var minY = -240;
 var speed : float;
 var numCellsStart : int;
 var minCells: int;
 var numVirusStart : int;
+var virus : Rigidbody;
 // Use this for initialization
 function Start () {
 	numVirusStart=20;
 	numCellsStart=20;
 	minCells=5;
+	for(virusGenerator = 0; virusGenerator<numVirusStart;virusGenerator++){
+		var virusClone : Rigidbody = Instantiate(virus, Vector3(Random.Range(minX+20,maxX-20),Random.Range(minY+20,maxY-20),0), virus.rotation);
+	}
+	//virusClone.GetComponent(virusMovement).randomDir();
 	speed = 100.0;
 }
 
