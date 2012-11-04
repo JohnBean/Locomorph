@@ -2,8 +2,8 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Disease Destroyer Assets\Scripts\virusMovement.js">
     <Files>
-      <File FileName="Assets\Disease Destroyer Assets\Scripts\virusMovement.js" Line="71" Column="28" />
-      <File FileName="Assets\Disease Destroyer Assets\Scripts\playerMovement.js" Line="32" Column="26" />
+      <File FileName="Assets\Disease Destroyer Assets\Scripts\virusMovement.js" Line="22" Column="4" />
+      <File FileName="Assets\Disease Destroyer Assets\Scripts\playerMovement.js" Line="17" Column="133" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

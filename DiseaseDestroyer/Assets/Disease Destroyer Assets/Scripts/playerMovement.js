@@ -7,13 +7,14 @@ var numCellsStart : int;
 var minCells: int;
 var numVirusStart : float;
 var virus : Rigidbody;
+var virusClone: Transform;
 // Use this for initialization
 function Start () {
 	numVirusStart=20.0;
 	numCellsStart=20;
 	minCells=5;
 	for(virusGenerator = 0; virusGenerator<numVirusStart;virusGenerator++){
-		var virusClone : Rigidbody = Instantiate(virus, Vector3(Random.Range(minX+20,maxX-20),Random.Range(minY+20,maxY-20),0), virus.rotation);
+		var virusClone : Rigidbody = Instantiate(virus, Vector3(Random.Range(minX+20,maxX-20),Random.Range(minY+20,maxY-20),0), virusClone.rotation);
 	}
 	speed = 100.0;
 }

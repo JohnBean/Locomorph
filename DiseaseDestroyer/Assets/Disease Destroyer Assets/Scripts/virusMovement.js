@@ -18,6 +18,8 @@ var yDir: float;
 
 // Use this for initialization
 function Start () {
+	// rigidbody.rotation.y=90;
+	// transform.rotation.y=90;
 	//var virusClone : Rigidbody = Instantiate(virus, transform.position, transform.rotation);
 
     // You can also acccess other components / scripts of the clone
@@ -48,8 +50,13 @@ function Update () {
     	yDir= Mathf.Abs(Random.Range(0,2));
     	transform.position.y=minY+1;
     } 
-    transform.Translate(Vector3(xDir,0,yDir) * speed * Time.deltaTime);
-    transform.position.z=0;    
+    transform.Translate(Vector3(xDir,yDir,0) * speed * Time.deltaTime);
+    transform.position.z=0;   
+    var angle = 90.0;
+    var axis = Vector3(90,90,90);
+    //rigidbody.rotation.ToAngleAxis(angle,axis);
+    //transform.rotation.;
+   // transform.up = rigidbody.velocity; 
 }
 function randomDirection(){
 	randomDir(.5,1.5);
