@@ -26,7 +26,8 @@ function Update () {
 	// change to random direction at random intervals
     if (Time.time >= tChange){
        //randomDirection();   
-       nearestCell();    
+       //nearestCell();    
+       decide();
     }
     if (transform.position.x >= maxX){ 
     	xDir= -Mathf.Abs(Random.Range(0,2));
@@ -88,8 +89,64 @@ function nearestCell(){
     		xDir=Random.Range(0.0,2.0);
    	 	}
     }
-    Random.seed=position.x;
     tChange = Time.time + Random.Range(1,2);
+}
+
+function flee(){
+	var player=GameObject.FindGameObjectWithTag("Player");
+	var position = transform.position; 
+	if(player!=null){
+    	if(player.transform.position.y<position.y){
+    		yDir=Random.Range(-2.0,0.0);
+    	}
+    	else if(player.transform.position.y>position.y){
+    		yDir=Random.Range(0.0,2.0);
+    	}
+    	if(player.transform.position.x<position.x){
+    		xDir=Random.Range(0.0,2.0);
+    	}
+   		else if(player.transform.position.x>position.x){
+    		xDir=Random.Range(-2.0,0.0);
+   	 	}
+    }
+    tChange = Time.time + Random.Range(1,2);
+}
+function attack(){
+	var player=GameObject.FindGameObjectWithTag("Player");
+	var position = transform.position; 
+	if(player!=null){
+    	if(player.transform.position.y<position.y){
+    		yDir=Random.Range(0.0,2.0);
+    	}
+    	else if(player.transform.position.y>position.y){
+    		yDir=Random.Range(-2.0,0.0);
+    	}
+    	if(player.transform.position.x<position.x){
+    		xDir=Random.Range(-2.0,0.0);
+    	}
+   		else if(player.transform.position.x>position.x){
+    		xDir=Random.Range(0.0,2.0);
+   	 	}
+    }
+    tChange = Time.time + Random.Range(1,2);
+}
+function decide(){
+	var player=GameObject.FindGameObjectWithTag("Player");
+	var distance = Mathf.Infinity; 
+    var position = transform.position; 
+    var diff = (player.transform.position - position);
+	var curDistance = diff.sqrMagnitude; 
+	if(GameObject.FindGameObjectsWithTag("Respawn").Length==0 || curDistance<50){
+		attack();//flee();
+	}
+	else{
+		if(Random.Range(0,6)<2){
+			randomDirection();
+		}
+		else{
+			nearestCell();
+		}
+	}	
 }
 function OnCollisionEnter( collision : Collision )
 {
