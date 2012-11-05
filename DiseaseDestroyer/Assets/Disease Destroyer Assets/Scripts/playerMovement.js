@@ -1,7 +1,7 @@
-public var maxX = 240;
-public var minX = -240;
-public var maxY = 240;
-public var minY = -240;
+public var maxX = 480;
+public var minX = -480;
+public var maxY = 480;
+public var minY = -480;
 var speed : float;
 var numCellsStart : float;
 var minCells: int;
@@ -10,14 +10,16 @@ var virus : Rigidbody;
 var virusClone: Transform;
 var cell : Rigidbody;
 var cellClone: Transform;
+var vPercent : float;
+var cPercent : float;
 // Use this for initialization
 function Start () {
 	var cellGenerator=0;
 	var cellGroup=0;
 	var groupSize= (Random.Range(0,10));
-	numVirusStart=20.0;
-	numCellsStart=90;
-	minCells=0;
+	numVirusStart=16.0;
+	numCellsStart=160;
+	minCells=40;
 	
 	while(cellGenerator<numCellsStart){
 		if(cellGroup<groupSize){
@@ -34,7 +36,9 @@ function Start () {
 
 // Update is called once per frame
 function Update () {
-    transform.Translate (Input.GetAxis ("Horizontal") * speed* Time.deltaTime,Input.GetAxis ("Vertical") * speed* Time.deltaTime, 0);
+	if(cPercent>=0 & vPercent>=0){
+    	transform.Translate (Input.GetAxis ("Horizontal") * speed* Time.deltaTime,Input.GetAxis ("Vertical") * speed* Time.deltaTime, 0);
+    }
 }
 
 
@@ -42,7 +46,8 @@ function OnGUI() {
 	var mapX=590;
 	var mapY=405;
 	var gos : GameObject[];
-	var vPercent : float;
+	var style : GUIStyle;
+	//style.fontSize=40;
     gos = GameObject.FindGameObjectsWithTag("Finish"); //finds how many viruses are left
 	vPercent = gos.Length/numVirusStart;
     GUI.backgroundColor = Color(0, 255-(30*vPercent),2-(2*vPercent),50);//change color based on number of viruses, fade green to teal
@@ -51,6 +56,19 @@ function OnGUI() {
     
     gos = GameObject.FindGameObjectsWithTag("Respawn"); //How many Cells remain
     cPercent= (gos.Length-minCells)/(numCellsStart-minCells);
-    GUI.backgroundColor = Color(255-(30*cPercent),1-(1*cPercent),1-(1*cPercent));//update color from red to brownred
-    GUI.HorizontalScrollbar(Rect (175,20,200,20), 0, cPercent*100,0, 100);//scale health
+    if(cPercent>=0){
+    	GUI.backgroundColor = Color(255-(30*cPercent),1-(1*cPercent),1-(1*cPercent));//update color from red to brownred
+   		GUI.HorizontalScrollbar(Rect (175,20,200,20), 0, cPercent*100,0, 100);//scale health
+   	}
+    if(cPercent<=0 || vPercent<=0){
+    	GUI.backgroundColor = Color(225,1,1);//update color from red to brownred
+   		GUI.HorizontalScrollbar(Rect (175,20,200,20), 0, 0,0, 100);//scale health
+    	GUI.Label(Rect(350,250,100,100),"Game Over");
+    	if(cPercent>0){
+    		GUI.Label(Rect(350,300,100,100),"You Win!");
+    	}
+    	else{
+    		GUI.Label(Rect(350,300,100,100),"You Lose.");
+    	}
+    }
 }

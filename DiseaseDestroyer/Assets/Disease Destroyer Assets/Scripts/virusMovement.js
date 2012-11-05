@@ -1,9 +1,9 @@
 var speed  = 10.0;
 var velocity : Vector3;
-public var maxX = 230;
-public var minX = -230;
-public var maxY = 230;
-public var minY = -230;
+public var maxX = 480;
+public var minX = -480;
+public var maxY = 480;
+public var minY = -480;
 //var clone : Transform;
 private var wallX=false;
 private var wallY=false;
@@ -26,10 +26,10 @@ function Update () {
 	// change to random direction at random intervals
     if (Time.time >= tChange){
        //randomDirection();   
-       //nearestCell();    
-       decide();
+       nearestCell();    
+       //decide();
     }
-    if (transform.position.x >= maxX){ 
+ /*   if (transform.position.x >= maxX){ 
     	xDir= -Mathf.Abs(Random.Range(0,2));
     	transform.position.x=maxX-1;
     } 
@@ -44,7 +44,7 @@ function Update () {
     if (transform.position.y <= minY){ 
     	yDir= Mathf.Abs(Random.Range(0,2));
     	transform.position.y=minY+1;
-    } 
+    } */
     transform.Translate(Vector3(xDir,0,yDir) * speed * Time.deltaTime);
     transform.position.z=0;   
 
@@ -150,7 +150,6 @@ function decide(){
 }
 function OnCollisionEnter( collision : Collision )
 {
-    print(collision.gameObject.name);
     if(collision.gameObject.name=="Player"){
     	Destroy (gameObject);
 

@@ -12,7 +12,7 @@ function OnCollisionStay(hit : Collision) {
 
 }
 function OnCollisionEnter(collision : Collision) {
-print(collision.gameObject.name);
+
 if(collision.gameObject.name.Contains("Virus")){
     	Destroy (gameObject,2.0);
 
