@@ -9,37 +9,137 @@ var numVirusStart : float;
 var virus : Rigidbody;
 var virusClone: Transform;
 var cell : Rigidbody;
-var cellClone: Transform;
+var cellClone : Transform;
 var vPercent : float;
 var cPercent : float;
+var bullet : Transform;
+var bulletSpeed : float = 20;
+var clone : Transform;
 // Use this for initialization
 function Start () {
 	var cellGenerator=0;
 	var cellGroup=0;
-	var groupSize= (Random.Range(0,10));
-	numVirusStart=16.0;
-	numCellsStart=160;
+	for(psudoRand=0; psudoRand<Time.time*2;psudoRand++){
+		Random.Range(-2,2);//trying to change what random is used when starting creation
+	}
+	
+	var groupSize= (Random.Range(0,6));
+	var xLoc= Random.Range(300,maxX-10);
+	var yLoc= Random.Range(300,maxY-10);
+	var top= (Random.Range(-3,3)>0);
+	var left= (Random.Range(-3,3)>0);
+	var xDir;
+	var yDir;
+	
+	print(top);
+	numVirusStart=20.0;
+	numCellsStart=70;
 	minCells=40;
 	
 	while(cellGenerator<numCellsStart){
-		if(cellGroup<groupSize){
-			
+		if(cellGroup==0){
+			if(top){
+				//moveUp=false;
+				yDir=1;
+			}
+			else{
+				yDir=-1;
+				yLoc=-yLoc;
+				
+				//moveUp=true;
+			}
+			if(left){
+				xDir=1;
+				xLoc= -xLoc;
+				//moveLeft=false;
+			}
+			else{
+				xDir=-1;
+				
+				//moveLeft=true;
+			}
+			if(xLoc>0){
+			xDir=-1;
 		}
-		var cellClone : Rigidbody = Instantiate(cell, Vector3(Random.Range(minX+20,maxX-20),Random.Range(minY+20,maxY-20),0), cellClone.rotation);
+		else{
+			xDir=1;
+		}
+		if(yLoc>0){
+			yDir=-1;
+		}
+		else{
+			yDir=1;
+		}
+		}
+		
+		var cellClone : Rigidbody = Instantiate(cell, Vector3(xLoc,yLoc,0), cellClone.rotation);
+		
+		if(xLoc>0){
+			xDir=-1;
+		}
+		else{
+			xDir=1;
+		}
+		if(yLoc>0){
+			yDir=-1;
+		}
+		else{
+			yDir=1;
+		}
+		print("x"+xLoc+ " dir: " +xDir+" y"+yLoc+ " dir: " +yDir);
+		yLoc=yLoc+((55+Random.Range(0,10))*yDir);
+		xLoc=xLoc+((55+Random.Range(0,10))*xDir);
+		if((Mathf.Abs(xLoc)>(maxX-30)) || (Mathf.Abs(yLoc)>(maxY-30)) || cellGroup >= groupSize){
+			groupSize= (Random.Range(0,10));
+			xLoc= Random.Range(300,maxX);
+			yLoc= Random.Range(300,maxY);
+			top= (Random.Range(-3,3)>0);
+			left= (Random.Range(-3,3)>0);
+			cellGroup=0;
+		}
 		cellGenerator=cellGenerator+1;
 	}
 	for(virusGenerator = 0; virusGenerator<numVirusStart;virusGenerator++){//spawn viruses at random locations
-		var virusClone : Rigidbody = Instantiate(virus, Vector3(Random.Range(minX+20,maxX-20),Random.Range(minY+20,maxY-20),0), virusClone.rotation);
+		var virusClone : Rigidbody = Instantiate(virus, Vector3(Random.Range(minX,maxX),Random.Range(minY,maxY),0), virusClone.rotation);
 	}
 	speed = 100.0;
 }
 
 // Update is called once per frame
 function Update () {
-	if(cPercent>=0 & vPercent>=0){
-    	transform.Translate (Input.GetAxis ("Horizontal") * speed* Time.deltaTime,Input.GetAxis ("Vertical") * speed* Time.deltaTime, 0);
+	var MouseWorldPosition: Vector3;
+	//if(cPercent>=0 && vPercent>=0){
+		//PlayerFacing();
+	if(cPercent>=0 && vPercent>=0){//only move if the game isn't over
+		if (Input.GetButtonDown("Fire1")) {
+
+   			 // Instantiate the projectile at the position and rotation of this transform
+   			 
+   			clone = Instantiate(bullet, transform.position, bullet.rotation);
+			//clone.transform.LookAt(Input.mousePosition);
+    // Add force to the cloned object in the object's forward direction
+    		clone.rigidbody.velocity=Vector3(0,1,0);
+    	}
+    	transform.Translate (-Input.GetAxis ("Horizontal") * speed* Time.deltaTime,Input.GetAxis ("Vertical") * speed* Time.deltaTime, 0);
     }
 }
+/*
+//Player always faces the mouse, does some voodoo shit with raycasting to determine direction to face
+function PlayerFacing(){
+	var hitdist = -1.0;
+	var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+	var playerPlane = new Plane(Vector3.up, transform.position);
+	if(playerPlane.Raycast(ray, hitdist)){
+		var targetPoint = ray.GetPoint(hitdist);
+		var rotation = Quaternion.LookRotation(targetPoint - transform.position);
+		//transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime);
+		transform.rotation = rotation;
+	}	
+
+    	//this.rigidbody.rotation=Quaternion(Vector3(Input.GetAxis ("Horizontal") * speed* Time.deltaTime,0,0));
+    	transform.Translate (Input.GetAxis ("Horizontal") * speed* Time.deltaTime,Input.GetAxis ("Vertical") * speed* Time.deltaTime, 0);
+    }
+}*/
 
 
 function OnGUI() {

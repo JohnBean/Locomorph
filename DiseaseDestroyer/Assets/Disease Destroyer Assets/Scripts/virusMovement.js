@@ -1,9 +1,14 @@
 var speed  = 10.0;
+var maxSpeed=45;
 var velocity : Vector3;
+public var attached=false;
+public var food;
+public var foodOffset: Vector3;
 public var maxX = 480;
 public var minX = -480;
 public var maxY = 480;
 public var minY = -480;
+//public var friction = .85;//percent of speed that remains (at .85 it loses 15% of its speed)
 //var clone : Transform;
 private var wallX=false;
 private var wallY=false;
@@ -18,36 +23,42 @@ var yDir: float;
 
 // Use this for initialization
 function Start () {
-
+	var food: GameObject;
+	var foodOffset: Vector3;
 }
 
 // Update is called once per frame
 function Update () {
 	// change to random direction at random intervals
+	if(food!=null&&attached){
+		rigidbody.velocity=food.velocity;
+		rigidbody.position= food.position+foodOffset;
+	}
     if (Time.time >= tChange){
+    	attached=false;
        //randomDirection();   
-       nearestCell();    
-       //decide();
+       //nearestCell();    
+           
+       decide();
+       rigidbody.velocity=rigidbody.velocity+Vector3(xDir*speed,yDir*speed,yDir*speed);
     }
- /*   if (transform.position.x >= maxX){ 
-    	xDir= -Mathf.Abs(Random.Range(0,2));
-    	transform.position.x=maxX-1;
-    } 
-    if (transform.position.x <= minX){ 
-    	xDir= Mathf.Abs(Random.Range(0,2));
-    	transform.position.x=minX+1;
-    } 
-    if (transform.position.y >= maxY){ 
-    	yDir = -Mathf.Abs(Random.Range(0,2));
-    	transform.position.y=maxY-1;
-    } 
-    if (transform.position.y <= minY){ 
-    	yDir= Mathf.Abs(Random.Range(0,2));
-    	transform.position.y=minY+1;
-    } */
-    transform.Translate(Vector3(xDir,0,yDir) * speed * Time.deltaTime);
+    if(rigidbody.velocity.magnitude>maxSpeed){
+    	rigidbody.velocity=rigidbody.velocity*.8;
+    }
+    if(rigidbody.position.x>maxX+30){
+    	rigidbody.position.x=maxX;
+    }
+    if(rigidbody.position.x<minX-30){
+    	rigidbody.position.x=minX;
+    }
+        if(rigidbody.position.y>maxY+30){
+    	rigidbody.position.y=maxY;
+    }
+        if(rigidbody.position.y<minY-30){
+    	rigidbody.position.y=minY;
+    }
+    
     transform.position.z=0;   
-
 }
 function randomDirection(){
 	randomDir(.5,1.5);
@@ -77,10 +88,11 @@ function nearestCell(){
     }
     if(closest!=null){
     	if(closest.transform.position.y<position.y){
-    		yDir=Random.Range(0.0,2.0);
+    		yDir=Random.Range(-2.0,0.0);
     	}
     	else if(closest.transform.position.y>position.y){
-    		yDir=Random.Range(-2.0,0.0);
+    		yDir=Random.Range(0.0,2.0);
+    		
     	}
     	if(closest.transform.position.x<position.x){
     		xDir=Random.Range(-2.0,0.0);
@@ -89,10 +101,10 @@ function nearestCell(){
     		xDir=Random.Range(0.0,2.0);
    	 	}
     }
-    tChange = Time.time + Random.Range(1,2);
+    tChange = Time.time + Random.Range(2,4);
 }
 
-function flee(){
+function attack(){
 	var player=GameObject.FindGameObjectWithTag("Player");
 	var position = transform.position; 
 	if(player!=null){
@@ -103,15 +115,16 @@ function flee(){
     		yDir=Random.Range(0.0,2.0);
     	}
     	if(player.transform.position.x<position.x){
-    		xDir=Random.Range(0.0,2.0);
+    		xDir=Random.Range(-2.0,0.0);
+    		
     	}
    		else if(player.transform.position.x>position.x){
-    		xDir=Random.Range(-2.0,0.0);
+    		xDir=Random.Range(0.0,2.0);
    	 	}
     }
     tChange = Time.time + Random.Range(1,2);
 }
-function attack(){
+function flee(){
 	var player=GameObject.FindGameObjectWithTag("Player");
 	var position = transform.position; 
 	if(player!=null){
@@ -136,11 +149,11 @@ function decide(){
     var position = transform.position; 
     var diff = (player.transform.position - position);
 	var curDistance = diff.sqrMagnitude; 
-	if(GameObject.FindGameObjectsWithTag("Respawn").Length==0 || curDistance<50){
+	if(GameObject.FindGameObjectsWithTag("Respawn").Length<30 || curDistance<100){
 		attack();//flee();
 	}
 	else{
-		if(Random.Range(0,6)<2){
+		if(Random.Range(0,8)<1){
 			randomDirection();
 		}
 		else{
@@ -150,6 +163,29 @@ function decide(){
 }
 function OnCollisionEnter( collision : Collision )
 {
+	if(collision.gameObject.name.Contains("Border")){
+		if(rigidbody.position.x>0&&Mathf.Abs(rigidbody.position.x)>450){
+			rigidbody.velocity.x=-Mathf.Abs(rigidbody.velocity.x);
+		}
+		if(rigidbody.position.x<0&&Mathf.Abs(rigidbody.position.x)>450){
+			rigidbody.velocity.x=Mathf.Abs(rigidbody.velocity.x);
+		}
+		if(rigidbody.position.y>0&&Mathf.Abs(rigidbody.position.y)>450){
+			rigidbody.velocity.y=-Mathf.Abs(rigidbody.velocity.y);
+		}
+		if(rigidbody.position.y<0&&Mathf.Abs(rigidbody.position.y)>450){
+			rigidbody.velocity.y=Mathf.Abs(rigidbody.velocity.y);
+		}
+    }
+	  if(collision.gameObject.name.Contains("bullet")){
+    	Destroy (gameObject);
+
+// Removes this script instance from the game object
+		Destroy (this);
+
+// Removes the rigidbody from the game object
+		Destroy (rigidbody);
+    }
     if(collision.gameObject.name=="Player"){
     	Destroy (gameObject);
 
@@ -159,5 +195,11 @@ function OnCollisionEnter( collision : Collision )
 // Removes the rigidbody from the game object
 		Destroy (rigidbody);
     }
-    
+    if(collision.gameObject.tag=="Respawn"&&Time.realtimeSinceStartup>2){
+    	attached=true;
+    	var food=collision.gameObject;
+    	foodOffset= food.rigidbody.position-this.rigidbody.position;
+    	rigidbody.velocity=food.rigidbody.velocity;
+    	tChange=Time.time+2;
+    }
 }
