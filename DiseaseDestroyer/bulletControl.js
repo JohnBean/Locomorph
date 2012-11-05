@@ -13,16 +13,7 @@ function OnCollisionStay(hit : Collision) {
 }
 function OnCollisionEnter(collision : Collision) {
 
-if(collision.gameObject.name.Contains("Virus")){
-    	Destroy (gameObject,2.0);
 
-// Removes this script instance from the game object
-		Destroy (this,2.0);
-
-// Removes the rigidbody from the game object
-		Destroy (rigidbody,2.0);
-    }
-    if(collision.gameObject.name.Contains("bullet")){
     	Destroy (gameObject);
 
 // Removes this script instance from the game object
@@ -30,5 +21,5 @@ if(collision.gameObject.name.Contains("Virus")){
 
 // Removes the rigidbody from the game object
 		Destroy (rigidbody);
-    }
+
 }

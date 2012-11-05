@@ -150,6 +150,15 @@ function decide(){
 }
 function OnCollisionEnter( collision : Collision )
 {
+	  if(collision.gameObject.name.Contains("bullet")){
+    	Destroy (gameObject);
+
+// Removes this script instance from the game object
+		Destroy (this);
+
+// Removes the rigidbody from the game object
+		Destroy (rigidbody);
+    }
     if(collision.gameObject.name=="Player"){
     	Destroy (gameObject);
 

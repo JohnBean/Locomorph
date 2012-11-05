@@ -9,9 +9,12 @@ var numVirusStart : float;
 var virus : Rigidbody;
 var virusClone: Transform;
 var cell : Rigidbody;
-var cellClone: Transform;
+var cellClone : Transform;
 var vPercent : float;
 var cPercent : float;
+var bullet : Transform;
+var bulletSpeed : float = 20;
+var clone : Transform;
 // Use this for initialization
 function Start () {
 	var cellGenerator=0;
@@ -36,9 +39,33 @@ function Start () {
 
 // Update is called once per frame
 function Update () {
-	if(cPercent>=0 & vPercent>=0){
-    	transform.Translate (Input.GetAxis ("Horizontal") * speed* Time.deltaTime,Input.GetAxis ("Vertical") * speed* Time.deltaTime, 0);
-    }
+	var MouseWorldPosition: Vector3;
+	//if(cPercent>=0 && vPercent>=0){
+		PlayerFacing();
+		if (Input.GetButtonDown("Fire1")) {
+
+   			 // Instantiate the projectile at the position and rotation of this transform
+   			 
+   			clone = Instantiate(bullet, transform.position, bullet.rotation);
+			//clone.transform.LookAt(Input.mousePosition);
+    // Add force to the cloned object in the object's forward direction
+    		clone.rigidbody.velocity=Vector3(0,1,0);
+    	}
+    	transform.Translate (-Input.GetAxis ("Horizontal") * speed* Time.deltaTime,Input.GetAxis ("Vertical") * speed* Time.deltaTime, 0);
+    //}
+}
+
+//Player always faces the mouse, does some voodoo shit with raycasting to determine direction to face
+function PlayerFacing(){
+	var hitdist = -1.0;
+	var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+	var playerPlane = new Plane(Vector3.up, transform.position);
+	if(playerPlane.Raycast(ray, hitdist)){
+		var targetPoint = ray.GetPoint(hitdist);
+		var rotation = Quaternion.LookRotation(targetPoint - transform.position);
+		//transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime);
+		transform.rotation = rotation;
+	}	
 }
 
 
