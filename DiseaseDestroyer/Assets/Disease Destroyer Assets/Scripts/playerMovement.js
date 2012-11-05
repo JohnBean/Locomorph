@@ -39,16 +39,18 @@ function Update () {
 
 
 function OnGUI() {
+	var mapX=590;
+	var mapY=405;
 	var gos : GameObject[];
 	var vPercent : float;
     gos = GameObject.FindGameObjectsWithTag("Finish"); //finds how many viruses are left
 	vPercent = gos.Length/numVirusStart;
-    GUI.backgroundColor = Color(0, 255-(30*vPercent),2-(2*vPercent));//change color based on number of viruses, fade green to teal
-    GUI.HorizontalScrollbar(Rect (375,40,200,20), 200, vPercent*100,0, 100);//change virus bar based on percent remaining
-    GUI.Label(Rect(10,5,100,50),"Score = " + (numVirusStart-gos.Length));//Score
+    GUI.backgroundColor = Color(0, 255-(30*vPercent),2-(2*vPercent),50);//change color based on number of viruses, fade green to teal
+    GUI.HorizontalScrollbar(Rect (375,20,200,20), 200, vPercent*100,0, 100);//change virus bar based on percent remaining
+    GUI.Label(Rect(15,25,100,100),"Score = " + (numVirusStart-gos.Length));//Score
     
     gos = GameObject.FindGameObjectsWithTag("Respawn"); //How many Cells remain
     cPercent= (gos.Length-minCells)/(numCellsStart-minCells);
     GUI.backgroundColor = Color(255-(30*cPercent),1-(1*cPercent),1-(1*cPercent));//update color from red to brownred
-    GUI.HorizontalScrollbar(Rect (175,40,200,20), 0, cPercent*100,0, 100);//scale health
+    GUI.HorizontalScrollbar(Rect (175,20,200,20), 0, cPercent*100,0, 100);//scale health
 }
