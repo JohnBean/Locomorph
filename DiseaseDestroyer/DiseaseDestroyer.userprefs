@@ -1,10 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Disease Destroyer Assets\Scripts\virusMovement.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Disease Destroyer Assets\Scripts\playerMovement.js">
     <Files>
-      <File FileName="Assets\Disease Destroyer Assets\Scripts\playerMovement.js" Line="28" Column="45" />
-      <File FileName="Assets\Disease Destroyer Assets\Scripts\virusMovement.js" Line="204" Column="65" />
-      <File FileName="Assets\Disease Destroyer Assets\Scripts\cellMovement.js" Line="57" Column="4" />
+      <File FileName="Assets\Disease Destroyer Assets\Scripts\playerMovement.js" Line="122" Column="3" />
+      <File FileName="Assets\Disease Destroyer Assets\Scripts\virusMovement.js" Line="1" Column="1" />
+      <File FileName="Assets\Disease Destroyer Assets\Scripts\cellMovement.js" Line="1" Column="1" />
+      <File FileName="Assets\Disease Destroyer Assets\Scripts\cameraScript.js" Line="9" Column="74" />
+      <File FileName="..\..\..\P3\Assets\CameraFollow.js" Line="8" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

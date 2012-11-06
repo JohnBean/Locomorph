@@ -38,7 +38,7 @@ function Start () {
 	numCellsStart=200;
 	minCells=60;
 	
-	while(cellGenerator<numCellsStart){
+	/*while(cellGenerator<numCellsStart){
 		if(cellGroup==0){
 			if(top){//should we be placing cells above or below our location(move toward center)
 				yDir=1;
@@ -83,21 +83,19 @@ function Start () {
 			cellGroup=0;
 		}
 		cellGenerator=cellGenerator+1;//go until you have the desired number of cells
-	}
+	}*/
 	for(virusGenerator = 0; virusGenerator<numVirusStart;virusGenerator++){//spawn viruses at random locations
 		var virusClone : Rigidbody = Instantiate(virus, Vector3(Random.Range(minX,maxX),Random.Range(minY,maxY),0), virusClone.rotation);
 	}
-	speed = 100.0;
 }
 
 // Update is called once per frame
-function Update () {
+function FixedUpdate () {
 	var MouseWorldPosition: Vector3;
-	//if(cPercent>=0 && vPercent>=0){
-		//PlayerFacing();
-	if(cPercent>=0 && vPercent>=0){//only move if the game isn't over
+	//if(cPercent>=0 && vPercent>=0){//only move if the game isn't over
+		PlayerFacing();
 		if (Input.GetButtonDown("Fire1")) {
-
+			
    			 // Instantiate the projectile at the position and rotation of this transform
    			 
    			clone = Instantiate(bullet, transform.position, bullet.rotation);
@@ -105,27 +103,24 @@ function Update () {
     // Add force to the cloned object in the object's forward direction
     		clone.rigidbody.velocity=Vector3(0,1,0);
     	}
-    	transform.Translate (Input.GetAxis ("Horizontal") * speed* Time.deltaTime,Input.GetAxis ("Vertical") * speed* Time.deltaTime, 0);
-    }
+    	transform.position.y = transform.position.y + Input.GetAxis("Vertical") * Time.deltaTime * speed;
+    	transform.position.x = transform.position.x + Input.GetAxis("Horizontal") * Time.deltaTime * speed;	
+    //}
 
 }
-/*
+
 //Player always faces the mouse, does some voodoo shit with raycasting to determine direction to face
 function PlayerFacing(){
-	var hitdist = -1.0;
+	var hitdist = 1.0;
 	var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-	var playerPlane = new Plane(Vector3.up, transform.position);
+	var playerPlane = new Plane(Vector3(0,0,1), transform.position);
 	if(playerPlane.Raycast(ray, hitdist)){
 		var targetPoint = ray.GetPoint(hitdist);
 		var rotation = Quaternion.LookRotation(targetPoint - transform.position);
 		//transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime);
 		transform.rotation = rotation;
-	}	
-
-    	//this.rigidbody.rotation=Quaternion(Vector3(Input.GetAxis ("Horizontal") * speed* Time.deltaTime,0,0));
-    	transform.Translate (Input.GetAxis ("Horizontal") * speed* Time.deltaTime,Input.GetAxis ("Vertical") * speed* Time.deltaTime, 0);
-    }
-}*/
+	}
+}
 
 
 function OnGUI() {
