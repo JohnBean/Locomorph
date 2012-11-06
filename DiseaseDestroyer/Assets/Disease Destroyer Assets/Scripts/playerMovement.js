@@ -31,7 +31,7 @@ function Start () {
 	var xDir;
 	var yDir;
 	
-	print(top);
+
 	numVirusStart=20.0;
 	numCellsStart=70;
 	minCells=40;
@@ -86,7 +86,6 @@ function Start () {
 		else{
 			yDir=1;
 		}
-		print("x"+xLoc+ " dir: " +xDir+" y"+yLoc+ " dir: " +yDir);
 		yLoc=yLoc+((55+Random.Range(0,10))*yDir);
 		xLoc=xLoc+((55+Random.Range(0,10))*xDir);
 		if((Mathf.Abs(xLoc)>(maxX-30)) || (Mathf.Abs(yLoc)>(maxY-30)) || cellGroup >= groupSize){

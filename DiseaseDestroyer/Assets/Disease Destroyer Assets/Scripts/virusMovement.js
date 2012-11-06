@@ -1,25 +1,164 @@
-var speed  = 10.0;
-var maxSpeed=45;
-var velocity : Vector3;
+var speed  = 35;//movement multiplier
+var maxSpeed=45;//can't get shunted too fast
 public var attached=false;
-public var food;
-public var foodOffset: Vector3;
-public var maxX = 480;
-public var minX = -480;
-public var maxY = 480;
-public var minY = -480;
-//public var friction = .85;//percent of speed that remains (at .85 it loses 15% of its speed)
-//var clone : Transform;
+public var food;//the cell nearest
+public var foodOffset: Vector3;//how far should the virus be when attaching to the cell
+public var curDistance;
+private var maxX = 500;//bounding box
+private var minX = -500;
+private var maxY = 500;
+private var minY = -500;
 private var wallX=false;
 private var wallY=false;
 private var tChange: float = 0; // force new direction in the first Update
-var xDir: float;
-var yDir: float;
+var xDir: float;//plan on moving left or right
+var yDir: float;//plan on moving up or down
 
+function attack(){
+	var player=GameObject.FindGameObjectWithTag("Player");
+	var position = transform.position; //find which direction the player is
+	if(player!=null){//head randomly in the players general direction
+    	if(player.transform.position.y<position.y){
+    		yDir=Random.Range(-2.0,0.0);
+    	}
+    	else if(player.transform.position.y>position.y){
+    		yDir=Random.Range(0.0,2.0);
+    	}
+    	if(player.transform.position.x<position.x){
+    		xDir=Random.Range(-2.0,0.0);
+    		
+    	}
+   		else if(player.transform.position.x>position.x){
+    		xDir=Random.Range(0.0,2.0);
+   	 	}
+    }
+    tChange = Time.time + Random.Range(1,2);//time until next decision
+}
 
-//var virus : Rigidbody;
+function consume(){
+	var gos : GameObject[];
+    gos = GameObject.FindGameObjectsWithTag("Respawn"); 
+    var closest : GameObject; 
+    var distance = Mathf.Infinity; 
+    var position = transform.position; 
+    
+    // Iterate through them and find the closest one
+    for (var go : GameObject in gos)  {
+        var diff = (go.transform.position - position);
+        var curDistance = diff.sqrMagnitude; 
+        if (curDistance < distance) { 
+            closest = go; 
+            distance = curDistance; 
+        } 
+    }
+    
+    if(closest!=null){
+    	if(closest.transform.position.y<position.y){
+    		yDir=Random.Range(-2.0,0.0);
+    	}
+    	else if(closest.transform.position.y>position.y){
+    		yDir=Random.Range(0.0,2.0);
+    	}
+    	if(closest.transform.position.x<position.x){
+    		xDir=Random.Range(-2.0,0.0);
+    	}
+   		else if(closest.transform.position.x>position.x){
+    		xDir=Random.Range(0.0,2.0);
+   	 	}
+    }
+    tChange = Time.time + Random.Range(2,4);
+}
 
+function decide(){
+	var player=GameObject.FindGameObjectWithTag("Player");
+	var distance = Mathf.Infinity; 
+    var position = transform.position; 
+    var diff = (player.transform.position - position);
+	var curDistance = diff.sqrMagnitude; 
+	
+	//if the player is nearby attack(or run) from it
+	if(curDistance<200 || GameObject.FindGameObjectsWithTag("Respawn").Length<30 ){
+		//print(curDistance);
+		attack();//flee();
+	}
+	else{
+		if(Random.Range(0,8)<1){//chance to move in a random direction
+			random();
+		}
+		else{//generally head toward the nearest cell
+			consume();
+		}
+	}	
+}
 
+function flee(){
+	var player=GameObject.FindGameObjectWithTag("Player");
+	var position = transform.position;//find direction of the player
+	if(player!=null){//head away from the player
+    	if(player.transform.position.y<position.y){
+    		yDir=Random.Range(0.0,2.0);
+    	}
+    	else if(player.transform.position.y>position.y){
+    		yDir=Random.Range(-2.0,0.0);
+    	}
+    	if(player.transform.position.x<position.x){
+    		xDir=Random.Range(-2.0,0.0);
+    	}
+   		else if(player.transform.position.x>position.x){
+    		xDir=Random.Range(0.0,2.0);
+   	 	}
+    }
+    tChange = Time.time + Random.Range(1,2);//time until next decision
+}
+
+function OnCollisionEnter( collision : Collision )
+{
+	//bounce off of border
+	if(collision.gameObject.name.Contains("Border")){
+		if(rigidbody.position.x>0&&Mathf.Abs(rigidbody.position.x)>450){
+			rigidbody.velocity.x=-Mathf.Abs(rigidbody.velocity.x);
+		}
+		if(rigidbody.position.x<0&&Mathf.Abs(rigidbody.position.x)>450){
+			rigidbody.velocity.x=Mathf.Abs(rigidbody.velocity.x);
+		}
+		if(rigidbody.position.y>0&&Mathf.Abs(rigidbody.position.y)>450){
+			rigidbody.velocity.y=-Mathf.Abs(rigidbody.velocity.y);
+		}
+		if(rigidbody.position.y<0&&Mathf.Abs(rigidbody.position.y)>450){
+			rigidbody.velocity.y=Mathf.Abs(rigidbody.velocity.y);
+		}
+    }
+	if(collision.gameObject.name.Contains("bullet")){
+    	Destroy (gameObject);
+		Destroy (this);
+		Destroy (rigidbody);
+    }
+    //what happens when you touch the player
+    if(collision.gameObject.name=="Player"){
+    	Destroy (gameObject);
+		Destroy (this);
+		Destroy (rigidbody);
+    }
+    //if you hit a cell after the game has started
+    if(collision.gameObject.tag=="Respawn"&&Time.realtimeSinceStartup>2){
+    	attached=true;//sticking to the cell
+    	var food=collision.gameObject;//the cell we've attached to
+    	foodOffset= food.rigidbody.position-this.rigidbody.position;//distance from virus to cell so we know how far away to keep the virus when attached
+    	rigidbody.velocity=food.rigidbody.velocity;//set it to move along at the same speed the cell is
+    	tChange=Time.time+2;//wait the 2 seconds for the cell to decay before choosing a new descision
+    }
+}
+
+//move in a random direction for 3-5 seconds
+function random(){
+	randomDir(3,5);
+}
+//move in a random direction for a chosen time
+function randomDir(minDuration: float, maxDuration: float){
+	tChange = Time.time + Random.Range(minDuration,maxDuration);
+	xDir = Random.Range(-2,2.0); // with float parameters, a random float
+    yDir = Random.Range(-2.0,2.0); //  between -2.0 and 2.0 is returned
+}
 
 // Use this for initialization
 function Start () {
@@ -35,171 +174,30 @@ function Update () {
 		rigidbody.position= food.position+foodOffset;
 	}
     if (Time.time >= tChange){
-    	attached=false;
-       //randomDirection();   
-       //nearestCell();    
-           
-       decide();
+       attached=false;//unhooks the virus if it was attached to a cell because it is now dead       
+       decide();//choose between attack,flee,consume,random
        rigidbody.velocity=rigidbody.velocity+Vector3(xDir*speed,yDir*speed,yDir*speed);
     }
     if(rigidbody.velocity.magnitude>maxSpeed){
-    	rigidbody.velocity=rigidbody.velocity*.8;
+    	rigidbody.velocity=rigidbody.velocity*.8;//slow the virus if it gets shoved too fast
     }
-    if(rigidbody.position.x>maxX+30){
-    	rigidbody.position.x=maxX;
+    if(rigidbody.transform.position.x>maxX){//if the virus leaves the bounding box bring it back in and send it toward the center
+    	rigidbody.transform.position.x=maxX;
+    	rigidbody.velocity.x=-Mathf.Abs(rigidbody.velocity.x);
     }
-    if(rigidbody.position.x<minX-30){
-    	rigidbody.position.x=minX;
+    if(rigidbody.transform.position.x<minX){
+    	rigidbody.transform.position.x=minX;
+    	rigidbody.velocity.x=Mathf.Abs(rigidbody.velocity.x);
     }
-        if(rigidbody.position.y>maxY+30){
-    	rigidbody.position.y=maxY;
+    if(rigidbody.transform.position.y>maxY){
+    	rigidbody.transform.position.y=maxY;
+    	rigidbody.velocity.y=-Mathf.Abs(rigidbody.velocity.y);
     }
-        if(rigidbody.position.y<minY-30){
-    	rigidbody.position.y=minY;
+    if(rigidbody.transform.position.y<minY){
+    	rigidbody.transform.position.y=minY;
+    	rigidbody.velocity.y=-Mathf.Abs(rigidbody.velocity.y);
     }
     
+    if(rigidbody.velocity.y!=0)rigidbody.transform.forward=Vector3(0,rigidbody.velocity.y,0);//look in the direction of movement
     transform.position.z=0;   
-}
-function randomDirection(){
-	randomDir(.5,1.5);
-}
-function randomDir(minDuration: float, maxDuration: float){
-	tChange = Time.time + Random.Range(minDuration,maxDuration);
-	xDir = Random.Range(-2,2.0); // with float parameters, a random float
-    yDir = Random.Range(-2.0,2.0); //  between -2.0 and 2.0 is returned
-}
-
-function nearestCell(){
-	var gos : GameObject[];
-    gos = GameObject.FindGameObjectsWithTag("Respawn"); 
-    var closest : GameObject; 
-    var distance = Mathf.Infinity; 
-    var position = transform.position; 
-    // Iterate through them and find the closest one
-    for (var go : GameObject in gos)  {
-    	
-        var diff = (go.transform.position - position);
-
-        var curDistance = diff.sqrMagnitude; 
-        if (curDistance < distance) { 
-            closest = go; 
-            distance = curDistance; 
-        } 
-    }
-    if(closest!=null){
-    	if(closest.transform.position.y<position.y){
-    		yDir=Random.Range(-2.0,0.0);
-    	}
-    	else if(closest.transform.position.y>position.y){
-    		yDir=Random.Range(0.0,2.0);
-    		
-    	}
-    	if(closest.transform.position.x<position.x){
-    		xDir=Random.Range(-2.0,0.0);
-    	}
-   		else if(closest.transform.position.x>position.x){
-    		xDir=Random.Range(0.0,2.0);
-   	 	}
-    }
-    tChange = Time.time + Random.Range(2,4);
-}
-
-function attack(){
-	var player=GameObject.FindGameObjectWithTag("Player");
-	var position = transform.position; 
-	if(player!=null){
-    	if(player.transform.position.y<position.y){
-    		yDir=Random.Range(-2.0,0.0);
-    	}
-    	else if(player.transform.position.y>position.y){
-    		yDir=Random.Range(0.0,2.0);
-    	}
-    	if(player.transform.position.x<position.x){
-    		xDir=Random.Range(-2.0,0.0);
-    		
-    	}
-   		else if(player.transform.position.x>position.x){
-    		xDir=Random.Range(0.0,2.0);
-   	 	}
-    }
-    tChange = Time.time + Random.Range(1,2);
-}
-function flee(){
-	var player=GameObject.FindGameObjectWithTag("Player");
-	var position = transform.position; 
-	if(player!=null){
-    	if(player.transform.position.y<position.y){
-    		yDir=Random.Range(0.0,2.0);
-    	}
-    	else if(player.transform.position.y>position.y){
-    		yDir=Random.Range(-2.0,0.0);
-    	}
-    	if(player.transform.position.x<position.x){
-    		xDir=Random.Range(-2.0,0.0);
-    	}
-   		else if(player.transform.position.x>position.x){
-    		xDir=Random.Range(0.0,2.0);
-   	 	}
-    }
-    tChange = Time.time + Random.Range(1,2);
-}
-function decide(){
-	var player=GameObject.FindGameObjectWithTag("Player");
-	var distance = Mathf.Infinity; 
-    var position = transform.position; 
-    var diff = (player.transform.position - position);
-	var curDistance = diff.sqrMagnitude; 
-	if(GameObject.FindGameObjectsWithTag("Respawn").Length<30 || curDistance<100){
-		attack();//flee();
-	}
-	else{
-		if(Random.Range(0,8)<1){
-			randomDirection();
-		}
-		else{
-			nearestCell();
-		}
-	}	
-}
-function OnCollisionEnter( collision : Collision )
-{
-	if(collision.gameObject.name.Contains("Border")){
-		if(rigidbody.position.x>0&&Mathf.Abs(rigidbody.position.x)>450){
-			rigidbody.velocity.x=-Mathf.Abs(rigidbody.velocity.x);
-		}
-		if(rigidbody.position.x<0&&Mathf.Abs(rigidbody.position.x)>450){
-			rigidbody.velocity.x=Mathf.Abs(rigidbody.velocity.x);
-		}
-		if(rigidbody.position.y>0&&Mathf.Abs(rigidbody.position.y)>450){
-			rigidbody.velocity.y=-Mathf.Abs(rigidbody.velocity.y);
-		}
-		if(rigidbody.position.y<0&&Mathf.Abs(rigidbody.position.y)>450){
-			rigidbody.velocity.y=Mathf.Abs(rigidbody.velocity.y);
-		}
-    }
-	  if(collision.gameObject.name.Contains("bullet")){
-    	Destroy (gameObject);
-
-// Removes this script instance from the game object
-		Destroy (this);
-
-// Removes the rigidbody from the game object
-		Destroy (rigidbody);
-    }
-    if(collision.gameObject.name=="Player"){
-    	Destroy (gameObject);
-
-// Removes this script instance from the game object
-		Destroy (this);
-
-// Removes the rigidbody from the game object
-		Destroy (rigidbody);
-    }
-    if(collision.gameObject.tag=="Respawn"&&Time.realtimeSinceStartup>2){
-    	attached=true;
-    	var food=collision.gameObject;
-    	foodOffset= food.rigidbody.position-this.rigidbody.position;
-    	rigidbody.velocity=food.rigidbody.velocity;
-    	tChange=Time.time+2;
-    }
 }
