@@ -1,13 +1,14 @@
 var speed  = 35;//movement multiplier
 var maxSpeed=45;//can't get shunted too fast
+var splat : AudioClip;//death sound
 public var attached=false;
 public var food;//the cell nearest
 public var foodOffset: Vector3;//how far should the virus be when attaching to the cell
 public var curDistance;
-private var maxX = 500;//bounding box
-private var minX = -500;
-private var maxY = 500;
-private var minY = -500;
+private var maxX = 491;//bounding box
+private var minX = -491;
+private var maxY = 491;
+private var minY = -491;
 private var wallX=false;
 private var wallY=false;
 private var tChange: float = 0; // force new direction in the first Update
@@ -129,12 +130,14 @@ function OnCollisionEnter( collision : Collision )
 		}
     }
 	if(collision.gameObject.name.Contains("bullet")){
+		 if (splat) AudioSource.PlayClipAtPoint(splat, transform.position);
     	Destroy (gameObject);
 		Destroy (this);
 		Destroy (rigidbody);
     }
     //what happens when you touch the player
     if(collision.gameObject.name=="Player"){
+    	if (splat) AudioSource.PlayClipAtPoint(splat, transform.position);
     	Destroy (gameObject);
 		Destroy (this);
 		Destroy (rigidbody);
@@ -198,6 +201,6 @@ function Update () {
     	rigidbody.velocity.y=-Mathf.Abs(rigidbody.velocity.y);
     }
     
-    if(rigidbody.velocity.y!=0)rigidbody.transform.forward=Vector3(0,rigidbody.velocity.y,0);//look in the direction of movement
+    if(rigidbody.velocity!=Vector3.zero&&rigidbody.velocity.x!=0)rigidbody.transform.forward=Vector3(0,rigidbody.velocity.y,0);//look in the direction of movement
     transform.position.z=0;   
 }

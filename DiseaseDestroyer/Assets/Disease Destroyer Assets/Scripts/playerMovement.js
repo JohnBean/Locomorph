@@ -12,9 +12,11 @@ var cell : Rigidbody;
 var cellClone : Transform;
 var vPercent : float;
 var cPercent : float;
+var scoreVal: int;
 var bullet : Transform;
 var bulletSpeed : float = 20;
 var clone : Transform;
+var multiplier :float =90;
 // Use this for initialization
 function Start () {
 	var cellGenerator=0;
@@ -23,80 +25,64 @@ function Start () {
 		Random.Range(-2,2);//trying to change what random is used when starting creation
 	}
 	
+	//Long yet still rather bad cell placement 
 	var groupSize= (Random.Range(0,6));
-	var xLoc= Random.Range(300,maxX-10);
-	var yLoc= Random.Range(300,maxY-10);
+	var xLoc= Random.Range(1,maxX);
+	var yLoc= Random.Range(1,maxY);
 	var top= (Random.Range(-3,3)>0);
 	var left= (Random.Range(-3,3)>0);
 	var xDir;
 	var yDir;
 	
-
 	numVirusStart=20.0;
-	numCellsStart=70;
-	minCells=40;
+	numCellsStart=200;
+	minCells=60;
 	
 	while(cellGenerator<numCellsStart){
 		if(cellGroup==0){
-			if(top){
-				//moveUp=false;
+			if(top){//should we be placing cells above or below our location(move toward center)
 				yDir=1;
 			}
 			else{
 				yDir=-1;
 				yLoc=-yLoc;
-				
-				//moveUp=true;
 			}
+			
 			if(left){
 				xDir=1;
 				xLoc= -xLoc;
-				//moveLeft=false;
 			}
 			else{
 				xDir=-1;
-				
-				//moveLeft=true;
 			}
+			
 			if(xLoc>0){
-			xDir=-1;
-		}
-		else{
-			xDir=1;
-		}
-		if(yLoc>0){
-			yDir=-1;
-		}
-		else{
-			yDir=1;
-		}
-		}
-		
-		var cellClone : Rigidbody = Instantiate(cell, Vector3(xLoc,yLoc,0), cellClone.rotation);
-		
-		if(xLoc>0){
-			xDir=-1;
-		}
-		else{
-			xDir=1;
-		}
-		if(yLoc>0){
-			yDir=-1;
-		}
-		else{
-			yDir=1;
-		}
-		yLoc=yLoc+((55+Random.Range(0,10))*yDir);
+				xDir=-1;
+			}
+			else{
+				xDir=1;
+			}
+			
+			if(yLoc>0){
+				yDir=-1;
+			}
+			else{
+				yDir=1;
+			}
+		}	
+		var cellClone : Rigidbody = Instantiate(cell, Vector3(xLoc,yLoc,0), cellClone.rotation);//create the cell at the location
+
+		yLoc=yLoc+((55+Random.Range(0,10))*yDir);//change to a new spot
 		xLoc=xLoc+((55+Random.Range(0,10))*xDir);
-		if((Mathf.Abs(xLoc)>(maxX-30)) || (Mathf.Abs(yLoc)>(maxY-30)) || cellGroup >= groupSize){
+		if((Mathf.Abs(xLoc)>(maxX-30)) || (Mathf.Abs(yLoc)>(maxY-30)) || cellGroup >= groupSize){//if it's a new group choose a new place and direction to put the group
 			groupSize= (Random.Range(0,10));
-			xLoc= Random.Range(300,maxX);
-			yLoc= Random.Range(300,maxY);
+			xLoc= Random.Range(1,maxX);
+			yLoc= Random.Range(1,maxY);
 			top= (Random.Range(-3,3)>0);
 			left= (Random.Range(-3,3)>0);
 			cellGroup=0;
 		}
-		cellGenerator=cellGenerator+1;
+		cellGenerator=cellGenerator+1;//go until you have the desired number of cells
 	}
 	for(virusGenerator = 0; virusGenerator<numVirusStart;virusGenerator++){//spawn viruses at random locations
 		var virusClone : Rigidbody = Instantiate(virus, Vector3(Random.Range(minX,maxX),Random.Range(minY,maxY),0), virusClone.rotation);
@@ -119,8 +105,9 @@ function Update () {
     // Add force to the cloned object in the object's forward direction
     		clone.rigidbody.velocity=Vector3(0,1,0);
     	}
-    	transform.Translate (-Input.GetAxis ("Horizontal") * speed* Time.deltaTime,Input.GetAxis ("Vertical") * speed* Time.deltaTime, 0);
+    	transform.Translate (Input.GetAxis ("Horizontal") * speed* Time.deltaTime,Input.GetAxis ("Vertical") * speed* Time.deltaTime, 0);
     }
+
 }
 /*
 //Player always faces the mouse, does some voodoo shit with raycasting to determine direction to face
@@ -151,7 +138,20 @@ function OnGUI() {
 	vPercent = gos.Length/numVirusStart;
     GUI.backgroundColor = Color(0, 255-(30*vPercent),2-(2*vPercent),50);//change color based on number of viruses, fade green to teal
     GUI.HorizontalScrollbar(Rect (375,20,200,20), 200, vPercent*100,0, 100);//change virus bar based on percent remaining
-    GUI.Label(Rect(15,25,100,100),"Score = " + (numVirusStart-gos.Length));//Score
+   // print(Time.deltaTime);
+    if(multiplier>1){
+    	if(cPercent>=0&&vPercent>=0){
+    		multiplier=multiplier-(Time.fixedDeltaTime/2.5);
+    		scoreVal=(numVirusStart-gos.Length);
+    	}
+    }
+    else{
+    	if(cPercent>=0&&vPercent>=0){
+    		multiplier=1;
+    		scoreVal= (numVirusStart-gos.Length);
+    	}
+    }
+    GUI.Label(Rect(30,20,100,100),"Score = " + (scoreVal*100)*Mathf.Round(multiplier));//Score
     
     gos = GameObject.FindGameObjectsWithTag("Respawn"); //How many Cells remain
     cPercent= (gos.Length-minCells)/(numCellsStart-minCells);
