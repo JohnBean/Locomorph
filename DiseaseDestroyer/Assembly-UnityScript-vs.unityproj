@@ -44,6 +44,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Disease Destroyer Assets\Scripts\HUDHandler.js" />
      <Compile Include="Assets\Disease Destroyer Assets\Scripts\bulletControl.js" />
      <Compile Include="Assets\Disease Destroyer Assets\Scripts\cameraScript.js" />
      <Compile Include="Assets\Disease Destroyer Assets\Scripts\cellMovement.js" />
