@@ -51,7 +51,7 @@ function Start () {
 	var yDir;
 	
 	numVirusStart=80.0;
-	numCellsStart=250;
+	numCellsStart=400;
 	minCells=150;
 	
 	while(cellGenerator<numCellsStart){
@@ -101,7 +101,7 @@ function Start () {
 		cellGenerator=cellGenerator+1;//go until you have the desired number of cells
 	}
 	for(virusGenerator = 0; virusGenerator<numVirusStart;virusGenerator++){//spawn viruses at random locations
-		var virusClone : Rigidbody = Instantiate(virus, Vector3(Random.Range(minX,maxX),Random.Range(minY,maxY),0), virusClone.rotation);
+		var virusClone : Rigidbody = Instantiate(virus, Vector3(Random.Range(minX+100,maxX-100),Random.Range(minY+100,maxY-100),0), virusClone.rotation);
 	}
 }
 
