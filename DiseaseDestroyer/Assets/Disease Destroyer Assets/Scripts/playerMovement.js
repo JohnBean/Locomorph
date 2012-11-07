@@ -17,6 +17,14 @@ var bullet : Transform;
 var bulletSpeed : float = 20;
 var clone : Transform;
 var multiplier :float =90;
+
+
+//temp
+public var radius = 60.0;
+var power = 300.0;
+//
+
+
 // Use this for initialization
 function Start () {
 	var cellGenerator=0;
@@ -34,11 +42,11 @@ function Start () {
 	var xDir;
 	var yDir;
 	
-	numVirusStart=20.0;
-	numCellsStart=200;
-	minCells=60;
+	numVirusStart=80.0;
+	numCellsStart=250;
+	minCells=150;
 	
-	/*while(cellGenerator<numCellsStart){
+	while(cellGenerator<numCellsStart){
 		if(cellGroup==0){
 			if(top){//should we be placing cells above or below our location(move toward center)
 				yDir=1;
@@ -83,7 +91,7 @@ function Start () {
 			cellGroup=0;
 		}
 		cellGenerator=cellGenerator+1;//go until you have the desired number of cells
-	}*/
+	}
 	for(virusGenerator = 0; virusGenerator<numVirusStart;virusGenerator++){//spawn viruses at random locations
 		var virusClone : Rigidbody = Instantiate(virus, Vector3(Random.Range(minX,maxX),Random.Range(minY,maxY),0), virusClone.rotation);
 	}
@@ -98,10 +106,30 @@ function FixedUpdate () {
 			
    			 // Instantiate the projectile at the position and rotation of this transform
    			 
-   			clone = Instantiate(bullet, transform.position, bullet.rotation);
+   			//clone = Instantiate(bullet, transform.position, transform.rotation);
 			//clone.transform.LookAt(Input.mousePosition);
     // Add force to the cloned object in the object's forward direction
-    		clone.rigidbody.velocity=Vector3(0,1,0);
+    	//	clone.rigidbody.velocity=transform.rotation;
+    	}
+    	if (Input.GetButtonDown("Fire2")) {
+			var explosionPos : Vector3 = gameObject.transform.position;
+    		var colliders = GameObject.FindGameObjectsWithTag("Finish");
+    		for (var hit : GameObject in colliders) {
+            	var diff = (transform.position - hit.rigidbody.position);      	
+            	var curDistance = Mathf.Sqrt(( Mathf.Abs(diff.x)*Mathf.Abs(diff.x))+(Mathf.Abs(diff.y)+Mathf.Abs(diff.y))); 
+        		if (curDistance<=radius){
+        			hit.GetComponent(virusMovement).kill();
+    			}
+    		}
+    		colliders = GameObject.FindGameObjectsWithTag("Respawn");
+    		for (var hit : GameObject in colliders) {
+            	diff = (transform.position - hit.rigidbody.position);    	
+            	curDistance = Mathf.Sqrt(( Mathf.Abs(diff.x)*Mathf.Abs(diff.x))+(Mathf.Abs(diff.y)+Mathf.Abs(diff.y))); 
+        		if (curDistance<=radius){
+           			hit.rigidbody.AddExplosionForce(power, explosionPos, radius, 2.0);
+    			}
+    		}
+    		print("boom");
     	}
     	transform.position.y = transform.position.y + Input.GetAxis("Vertical") * Time.deltaTime * speed;
     	transform.position.x = transform.position.x + Input.GetAxis("Horizontal") * Time.deltaTime * speed;	

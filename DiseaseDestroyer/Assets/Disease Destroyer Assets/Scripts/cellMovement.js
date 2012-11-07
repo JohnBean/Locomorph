@@ -4,9 +4,14 @@ private var maxX = 480;//bounding box
 private var minX = -480;
 private var maxY = 480;
 private var minY = -480;
+private var emitter: ParticleEmitter;
 // Use this for initialization
 
 function Start () {
+	emitter = GetComponentInChildren(ParticleEmitter);   
+    if (emitter) {
+        emitter.emit = false;
+    }
 }
 
 // Update is called once per frame
@@ -48,9 +53,9 @@ function OnCollisionEnter(collision : Collision) {
 		}
     }
 	if(collision.gameObject.name.Contains("Virus")&&Time.realtimeSinceStartup>2){//destroy 2 seconds after a viruses touch
-		//GetComponent(ParticleAnimator).autodestruct = false;
-		//particleEmitter.enabled=true;
-		//particleEmitter.Emit(1000);
+		emitter.emit=true;
+		emitter.transform.parent=null; // detach particle system
+		Destroy(emitter.gameObject, 3);
 		if(!oneShotAudio){//play death sound and destroy
 			splat.Play();
 			oneShotAudio=true;

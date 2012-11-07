@@ -14,6 +14,7 @@ private var wallY=false;
 private var tChange: float = 0; // force new direction in the first Update
 var xDir: float;//plan on moving left or right
 var yDir: float;//plan on moving up or down
+public var emitter: ParticleEmitter;
 
 function attack(){
 	var player=GameObject.FindGameObjectWithTag("Player");
@@ -112,6 +113,15 @@ function flee(){
     tChange = Time.time + Random.Range(1,2);//time until next decision
 }
 
+function kill(){
+	if (splat) AudioSource.PlayClipAtPoint(splat, transform.position);
+	emitter.emit=true;
+	emitter.transform.parent=null; // detach particle system
+	Destroy(emitter.gameObject, 2);
+    Destroy (gameObject);
+	Destroy (this);
+	Destroy (rigidbody);
+}
 function OnCollisionEnter( collision : Collision )
 {
 	//bounce off of border
@@ -130,17 +140,11 @@ function OnCollisionEnter( collision : Collision )
 		}
     }
 	if(collision.gameObject.name.Contains("bullet")){
-		 if (splat) AudioSource.PlayClipAtPoint(splat, transform.position);
-    	Destroy (gameObject);
-		Destroy (this);
-		Destroy (rigidbody);
+		kill();
     }
     //what happens when you touch the player
     if(collision.gameObject.name=="Player"){
-    	if (splat) AudioSource.PlayClipAtPoint(splat, transform.position);
-    	Destroy (gameObject);
-		Destroy (this);
-		Destroy (rigidbody);
+    	kill();
     }
     //if you hit a cell after the game has started
     if(collision.gameObject.tag=="Respawn"&&Time.realtimeSinceStartup>2){
@@ -152,6 +156,9 @@ function OnCollisionEnter( collision : Collision )
     }
 }
 
+function onDestroy(){
+	
+}
 //move in a random direction for 3-5 seconds
 function random(){
 	randomDir(3,5);
@@ -167,6 +174,10 @@ function randomDir(minDuration: float, maxDuration: float){
 function Start () {
 	var food: GameObject;
 	var foodOffset: Vector3;
+	emitter = GetComponentInChildren(ParticleEmitter);   
+    if (emitter) {
+        emitter.emit = false;
+    }
 }
 
 // Update is called once per frame
