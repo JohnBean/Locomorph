@@ -14,7 +14,7 @@ function OnCollisionStay(hit : Collision) {
 function OnCollisionEnter(collision : Collision) {
 
  if(!collision.gameObject.tag.Contains("Player")){
-
+		Destroy(collision.gameObject);
     	Destroy (gameObject);
 
 // Removes this script instance from the game object

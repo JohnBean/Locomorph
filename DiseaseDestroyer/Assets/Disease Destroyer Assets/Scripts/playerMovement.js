@@ -3,7 +3,7 @@ public var minX = -480;
 public var maxY = 480;
 public var minY = -480;
 var speed : float;
-var bullet : Transform;
+var bullet : Rigidbody;
 var bulletSpeed : float = 20;
 var clone : Transform;
 
@@ -28,10 +28,8 @@ function FixedUpdate () {
 			
    			 // Instantiate the projectile at the position and rotation of this transform
    			 
-   			//clone = Instantiate(bullet, transform.position, transform.rotation);
-			//clone.transform.LookAt(Input.mousePosition);
-    // Add force to the cloned object in the object's forward direction
-    	//	clone.rigidbody.velocity=transform.rotation;
+   			var clone : Rigidbody = Instantiate(bullet, GameObject.Find("BulletSpawn").transform.position, transform.rotation);
+			clone.velocity = Vector3.Normalize(GameObject.Find("BulletSpawn").transform.position - transform.position) * bulletSpeed;
     	}
     	if (Input.GetButtonDown("Fire2")) {
 			var explosionPos : Vector3 = gameObject.transform.position;
