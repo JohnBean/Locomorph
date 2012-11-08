@@ -1,6 +1,5 @@
-var pushRadius : float;
-var deathRadius : float;
-var power : float;
+public var radius = 60.0;
+var power = 2.0;
 // Use this for initialization
 function Start () {
 }
@@ -19,7 +18,7 @@ function OnCollisionEnter(collision : Collision) {
     		for (var hit : GameObject in colliders) {
             	var diff = (transform.position - hit.rigidbody.position);      	
             	var curDistance = Mathf.Sqrt(( Mathf.Abs(diff.x)*Mathf.Abs(diff.x))+(Mathf.Abs(diff.y)+Mathf.Abs(diff.y))); 
-        		if (curDistance<=deathRadius){
+        		if (curDistance<=radius){
         			hit.GetComponent(virusMovement).kill();
     			}
     		}
@@ -28,17 +27,20 @@ function OnCollisionEnter(collision : Collision) {
     		{
     		
             	diff = (rigidbody.position - hit.rigidbody.position);    	
-            	curDistance = Mathf.Sqrt(( Mathf.Abs(diff.x)*Mathf.Abs(diff.x))+(Mathf.Abs(diff.y)*Mathf.Abs(diff.y))); 
-        		if (curDistance<=pushRadius){
-        			print("cell:"+curDistance + " radius " + pushRadius);
+            	curDistance = Mathf.Sqrt(( Mathf.Abs(diff.x)*Mathf.Abs(diff.x))+(Mathf.Abs(diff.y)+Mathf.Abs(diff.y))); 
+        		if (curDistance<=radius){
+        			print("cell:"+curDistance + " radius " + radius);
            			hit.rigidbody.velocity=hit.rigidbody.velocity+(diff)*-9;//.x=100;//AddExplosionForce(power, explosionPos, radius, 2.0);
     			}
     		}
-    //Destroys object in question if not the player or a wall
- 	if(!collision.gameObject.tag.Contains("Player") && collision.gameObject.tag != "Wall"){
+ 	if(!collision.gameObject.tag.Contains("Player")){
 		Destroy(collision.gameObject);
+    	Destroy (gameObject);
 
+// Removes this script instance from the game object
+		//Destroy (this);
+
+// Removes the rigidbody from the game object
+		//Destroy (rigidbody);
     }
-    //Destroys object
-    Destroy (gameObject);
 }
