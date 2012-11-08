@@ -34,8 +34,8 @@ function Start () {
 	var top= (Random.Range(-3,3)>0);
 	var left= (Random.Range(-3,3)>0);
 	
-	numVirusStart=10.0;
-	numCellsStart=100;
+	numVirusStart=80.0;
+	numCellsStart=400;
 	minCells=150;
 	
 	while(cellGenerator<numCellsStart){
