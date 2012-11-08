@@ -21,9 +21,9 @@ function Update () {
 	if(this.startTime==null){
 		this.startTime=Time.realtimeSinceStartup;
 	}
-	if(rigidbody.velocity.magnitude>=50){
-		rigidbody.velocity=rigidbody.velocity*.95;
-	}
+	//if(rigidbody.velocity.magnitude>=50){
+	//	rigidbody.velocity=rigidbody.velocity*.95;
+	//}
 	if(rigidbody.transform.position.x>maxX){//if the virus leaves the bounding box bring it back in and send it toward the center
     	rigidbody.transform.position.x=maxX;
     	rigidbody.velocity.x=-Mathf.Abs(rigidbody.velocity.x);
