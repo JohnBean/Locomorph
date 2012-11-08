@@ -5,6 +5,7 @@ private var minX = -480;
 private var maxY = 480;
 private var minY = -480;
 private var emitter: ParticleEmitter;
+private var startTime;
 // Use this for initialization
 
 function Start () {
@@ -12,10 +13,14 @@ function Start () {
     if (emitter) {
         emitter.emit = false;
     }
+    this.startTime=Time.realtimeSinceStartup;
 }
 
 // Update is called once per frame
 function Update () {
+	if(this.startTime==null){
+		this.startTime=Time.realtimeSinceStartup;
+	}
 	if(rigidbody.velocity.magnitude>=50){
 		rigidbody.velocity=rigidbody.velocity*.95;
 	}
@@ -52,10 +57,16 @@ function OnCollisionEnter(collision : Collision) {
 			rigidbody.velocity.y=Mathf.Abs(rigidbody.velocity.y);
 		}
     }
-	if(collision.gameObject.name.Contains("Virus")&&Time.realtimeSinceStartup>2){//destroy 2 seconds after a viruses touch
-		emitter.emit=true;
-		emitter.transform.parent=null; // detach particle system
-		Destroy(emitter.gameObject, 3);
+    if(this.startTime==null){
+		this.startTime=Time.realtimeSinceStartup;
+	}
+	if(collision.gameObject.name.Contains("Virus")&&(Time.realtimeSinceStartup>(this.startTime+2))){//destroy 2 seconds after a viruses touch
+	
+		if(emitter!=null){
+			emitter.emit=true;
+			emitter.transform.parent=null; // detach particle system
+			Destroy(emitter.gameObject, 3);
+		}
 		if(!oneShotAudio){//play death sound and destroy
 			splat.Play();
 			oneShotAudio=true;

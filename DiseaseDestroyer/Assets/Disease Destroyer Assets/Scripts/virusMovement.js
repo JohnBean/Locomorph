@@ -15,6 +15,7 @@ private var tChange: float = 0; // force new direction in the first Update
 var xDir: float;//plan on moving left or right
 var yDir: float;//plan on moving up or down
 public var emitter: ParticleEmitter;
+private var startTime;
 
 function attack(){
 	var player=GameObject.FindGameObjectWithTag("Player");
@@ -124,6 +125,9 @@ function kill(){
 }
 function OnCollisionEnter( collision : Collision )
 {
+	if(this.startTime==null){
+		this.startTime=Time.realtimeSinceStartup;
+	}
 	//bounce off of border
 	if(collision.gameObject.name.Contains("Border")){
 		if(rigidbody.position.x>0&&Mathf.Abs(rigidbody.position.x)>450){
@@ -147,7 +151,7 @@ function OnCollisionEnter( collision : Collision )
     	kill();
     }
     //if you hit a cell after the game has started
-    if(collision.gameObject.tag=="Respawn"&&Time.realtimeSinceStartup>2){
+    if(collision.gameObject.tag=="Respawn"&&(Time.realtimeSinceStartup>(this.startTime+2))){
     	attached=true;//sticking to the cell
     	var food=collision.gameObject;//the cell we've attached to
     	foodOffset= food.rigidbody.position-this.rigidbody.position;//distance from virus to cell so we know how far away to keep the virus when attached
@@ -178,10 +182,14 @@ function Start () {
     if (emitter) {
         emitter.emit = false;
     }
+    this.startTime=Time.realtimeSinceStartup;
 }
 
 // Update is called once per frame
 function Update () {
+	if(this.startTime==null){
+		this.startTime=Time.realtimeSinceStartup;
+	}
 	// change to random direction at random intervals
 	if(food!=null&&attached){
 		rigidbody.velocity=food.velocity;
