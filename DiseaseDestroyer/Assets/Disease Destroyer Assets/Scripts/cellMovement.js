@@ -15,7 +15,7 @@ function Start () {
     }
     this.startTime=Time.realtimeSinceStartup;
 }
-
+ 
 // Update is called once per frame
 function Update () {
 	if(this.startTime==null){
@@ -38,7 +38,7 @@ function Update () {
     }
     if(rigidbody.transform.position.y<minY){
     	rigidbody.transform.position.y=minY;
-    	rigidbody.velocity.y=-Mathf.Abs(rigidbody.velocity.y);
+    	rigidbody.velocity.y=Mathf.Abs(rigidbody.velocity.y);
     }
 }
 
@@ -84,4 +84,15 @@ function OnCollisionEnter(collision : Collision) {
 		Destroy (this);
 		Destroy (rigidbody);
     }
+}
+
+function kill(){
+	if (splat) splat.Play();
+
+	emitter.emit=true;
+	emitter.transform.parent=null; // detach particle system
+	Destroy(emitter.gameObject, 2);
+    Destroy (gameObject);
+	Destroy (this);
+	Destroy (rigidbody);
 }

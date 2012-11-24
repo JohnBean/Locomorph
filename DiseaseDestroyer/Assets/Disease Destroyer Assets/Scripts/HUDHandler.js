@@ -22,7 +22,7 @@ var loseScreen : Texture;
 function Start () {
 	var cellGenerator=0;
 	var cellGroup=0;
-	
+	multiplier=90;
 	for(var psudoRand=0; psudoRand<Time.time*2;psudoRand++){
 		Random.Range(-2,2);//trying to change what random is used when starting creation
 	}
@@ -34,9 +34,9 @@ function Start () {
 	var top= (Random.Range(-3,3)>0);
 	var left= (Random.Range(-3,3)>0);
 	
-	numVirusStart=10.0;
-	numCellsStart=100;
-	minCells=150;
+	numVirusStart=20.0;
+	numCellsStart=250;
+	minCells=100;
 	
 	while(cellGenerator<numCellsStart){
 		if(cellGroup==0){
@@ -133,6 +133,7 @@ function OnGUI() {
    			for (var go : GameObject in gos)  {
 				Destroy(go);
 			}
+			GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).restart();
 			this.Start();//gameObject.Start();
 		}
     }

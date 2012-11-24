@@ -1,38 +1,77 @@
-public var maxX = 480;
-public var minX = -480;
-public var maxY = 480;
-public var minY = -480;
+public var maxX = 490;
+public var minX = -490;
+public var maxY = 490;
+public var minY = -490;
 var speed : float;
 var bullet : Rigidbody;
 var bulletSpeed : float;
 var clone : Transform;
-
+private var startTime;
+var curBullet: Rigidbody;
 // Use this for initialization
 function Start () {
-	
+	startTime=Time.realtimeSinceStartup;
 }
-
+function restart(){
+	rigidbody.position=Vector3.zero;
+	rigidbody.velocity=Vector3.zero;
+	startTime=Time.realtimeSinceStartup;
+}
 //Update is called once per frame
 function Update(){
 	//Finds number of bullets, fires if there are none
 	var numBullets = GameObject.FindGameObjectsWithTag("Bullet").Length;
-	if (Input.GetButtonDown("Fire1") && numBullets == 0) {
-		
+	if (Input.GetButtonDown("Fire1")) {
+		if(numBullets == 0){
+			curBullet = Instantiate(bullet, GameObject.Find("BulletSpawn").transform.position, transform.rotation);
+			curBullet.velocity = Vector3.Normalize(GameObject.Find("BulletSpawn").transform.position - transform.position) * bulletSpeed;
+		}
+		else{
+			curBullet.GetComponent(bulletControl).kill();
+		}
 		 // Instantiate the projectile at the position and rotation of this transform
 		 
-		var clone : Rigidbody = Instantiate(bullet, GameObject.Find("BulletSpawn").transform.position, transform.rotation);
-		clone.velocity = Vector3.Normalize(GameObject.Find("BulletSpawn").transform.position - transform.position) * bulletSpeed;
+		
 	}	
 }
 
 // FixedUpdate is called with physics
 function FixedUpdate () {
-	//if(cPercent>=0 && vPercent>=0){//only move if the game isn't over
+	if((Time.realtimeSinceStartup>(this.startTime+1))){//only move if the game isn't over
 		PlayerFacing();
-    	rigidbody.velocity.y =  Input.GetAxis("Vertical") * speed;
-    	rigidbody.velocity.x =  Input.GetAxis("Horizontal") * speed;	
-    //}
-
+    	rigidbody.velocity.y =  rigidbody.velocity.y+Input.GetAxis("Vertical") * speed;
+    	rigidbody.velocity.x =  rigidbody.velocity.x+Input.GetAxis("Horizontal") * speed;	
+    }
+    else{
+    	rigidbody.position=Vector3.zero;
+		rigidbody.velocity=Vector3.zero;
+    }
+    if(rigidbody.transform.position.x>maxX){//if the virus leaves the bounding box bring it back in and send it toward the center
+    	rigidbody.transform.position.x=maxX;
+    	rigidbody.velocity.x=-Mathf.Abs(rigidbody.velocity.x*.5);
+    }
+    if(rigidbody.transform.position.x<minX){
+    	rigidbody.transform.position.x=minX;
+    	rigidbody.velocity.x=Mathf.Abs(rigidbody.velocity.x*.5);
+    }
+    if(rigidbody.transform.position.y>maxY){
+    	rigidbody.transform.position.y=maxY;
+    	rigidbody.velocity.y=-Mathf.Abs(rigidbody.velocity.y*.5);
+    }
+    if(rigidbody.transform.position.y<minY){
+    	rigidbody.transform.position.y=minY;
+    	rigidbody.velocity.y=Mathf.Abs(rigidbody.velocity.y*.5);
+    }
+	if(rigidbody.velocity.magnitude>=450){
+		rigidbody.velocity=rigidbody.velocity*.95;
+	}
+	else{
+		rigidbody.velocity=rigidbody.velocity*.99;
+	}
+}
+function addVel(velocity: Vector3){
+	rigidbody.velocity.x=velocity.x;
+	rigidbody.velocity.y=velocity.y;	
 }
 
 //Player always faces the mouse, does some voodoo shit with raycasting to determine direction to face

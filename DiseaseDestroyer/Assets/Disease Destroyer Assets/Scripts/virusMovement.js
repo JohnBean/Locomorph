@@ -217,7 +217,7 @@ function Update () {
     }
     if(rigidbody.transform.position.y<minY){
     	rigidbody.transform.position.y=minY;
-    	rigidbody.velocity.y=-Mathf.Abs(rigidbody.velocity.y);
+    	rigidbody.velocity.y=Mathf.Abs(rigidbody.velocity.y);
     }
     
     if(rigidbody.velocity!=Vector3.zero&&rigidbody.velocity.x!=0)rigidbody.transform.forward=Vector3(0,rigidbody.velocity.y,0);//look in the direction of movement
