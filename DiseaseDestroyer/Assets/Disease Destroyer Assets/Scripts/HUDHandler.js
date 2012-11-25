@@ -36,7 +36,7 @@ function Start () {
 	
 	numVirusStart=20.0;
 	numCellsStart=250;
-	minCells=100;
+	minCells=0;
 	
 	while(cellGenerator<numCellsStart){
 		if(cellGroup==0){

@@ -24,7 +24,7 @@ function Update(){
 	if (Input.GetButtonDown("Fire1")) {
 		if(numBullets == 0){
 			curBullet = Instantiate(bullet, GameObject.Find("BulletSpawn").transform.position, transform.rotation);
-			curBullet.velocity = Vector3.Normalize(GameObject.Find("BulletSpawn").transform.position - transform.position) * bulletSpeed;
+			curBullet.velocity = Vector3.Normalize(GameObject.Find("BulletSpawn").transform.position - transform.position) * bulletSpeed;// + GameObject.Find("Character").rigidbody.velocity;
 		}
 		else{
 			curBullet.GetComponent(bulletControl).kill();
@@ -39,8 +39,10 @@ function Update(){
 function FixedUpdate () {
 	if((Time.realtimeSinceStartup>(this.startTime+1))){//only move if the game isn't over
 		PlayerFacing();
-    	rigidbody.velocity.y =  rigidbody.velocity.y+Input.GetAxis("Vertical") * speed;
-    	rigidbody.velocity.x =  rigidbody.velocity.x+Input.GetAxis("Horizontal") * speed;	
+    	if(rigidbody.velocity.magnitude<350){
+    		rigidbody.velocity.y =  rigidbody.velocity.y+Input.GetAxis("Vertical") * speed;
+    		rigidbody.velocity.x =  rigidbody.velocity.x+Input.GetAxis("Horizontal") * speed;
+    	}	
     }
     else{
     	rigidbody.position=Vector3.zero;

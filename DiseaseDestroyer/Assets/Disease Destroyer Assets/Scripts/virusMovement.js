@@ -80,7 +80,7 @@ function decide(){
 	var curDistance = diff.sqrMagnitude; 
 	
 	//if the player is nearby attack(or run) from it
-	if(curDistance<200 || GameObject.FindGameObjectsWithTag("Respawn").Length<30 ){
+	if(curDistance<200 || GameObject.FindGameObjectsWithTag("Respawn").Length<1 ){
 		//print(curDistance);
 		attack();//flee();
 	}

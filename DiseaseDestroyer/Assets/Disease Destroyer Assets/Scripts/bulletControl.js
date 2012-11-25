@@ -71,7 +71,9 @@ function kill(){
             curDistance = Mathf.Sqrt(( Mathf.Abs(diff.x)*Mathf.Abs(diff.x))+(Mathf.Abs(diff.y)*Mathf.Abs(diff.y))); 
     		if(curDistance<=pushRadius+10){
     			//print("player"+GameObject.FindGameObjectWithTag("Player").rigidbody.velocity);
-    			GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).addVel(diff*-6);//.rigidbody.position = diff*-2000;
+    			var power=65+(55*((pushRadius+10)/diff.magnitude));
+    			print("dif"+diff.magnitude+ " power"+power);
+    			GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).addVel(diff.normalized*-(power));//.rigidbody.position = diff*-2000;
     		}
     //Destroys object in question if not the player or a wall
     emitter = GetComponentInChildren(ParticleEmitter);  
