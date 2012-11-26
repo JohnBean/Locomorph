@@ -5,6 +5,9 @@ private var minX = -480;
 private var maxY = 480;
 private var minY = -480;
 private var emitter: ParticleEmitter;
+public var tex1: Texture2D;
+public var tex2: Texture2D;
+public var tex3: Texture2D;
 private var startTime;
 // Use this for initialization
 
@@ -43,6 +46,8 @@ function Update () {
 }
 
 function OnCollisionEnter(collision : Collision) {
+	//var tex = Resources.Load("cell3");
+	
 	if(collision.gameObject.name.Contains("Border")){//bounce off borders
 		if(rigidbody.position.x>0&&Mathf.Abs(rigidbody.position.x)>450){
 			rigidbody.velocity.x=-Mathf.Abs(rigidbody.velocity.x);
@@ -59,9 +64,12 @@ function OnCollisionEnter(collision : Collision) {
     }
     if(this.startTime==null){
 		this.startTime=Time.realtimeSinceStartup;
-	}
+	}/*
+	if(collision.gameObject.name.Contains("Character")){
+		renderer.material.mainTexture = tex3;
+	}*/
 	if(collision.gameObject.name.Contains("Virus")&&(Time.realtimeSinceStartup>(this.startTime+2))){//destroy 2 seconds after a viruses touch
-	
+		renderer.material.mainTexture = tex3;
 		if(emitter!=null){
 			emitter.emit=true;
 			emitter.transform.parent=null; // detach particle system
