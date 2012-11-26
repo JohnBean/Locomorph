@@ -4,6 +4,7 @@ private var maxX = 480;//bounding box
 private var minX = -480;
 private var maxY = 480;
 private var minY = -480;
+private var health=3;
 private var emitter: ParticleEmitter;
 public var tex1: Texture2D;
 public var tex2: Texture2D;
@@ -69,38 +70,56 @@ function OnCollisionEnter(collision : Collision) {
 		renderer.material.mainTexture = tex3;
 	}*/
 	if(collision.gameObject.name.Contains("Virus")&&(Time.realtimeSinceStartup>(this.startTime+2))){//destroy 2 seconds after a viruses touch
-		renderer.material.mainTexture = tex3;
-		if(emitter!=null){
-			emitter.emit=true;
-			emitter.transform.parent=null; // detach particle system
-			Destroy(emitter.gameObject, 3);
+		health=health-1;
+		if(health==2){renderer.material.mainTexture = tex2;}
+		if(health==1){renderer.material.mainTexture= tex3;}
+		if(health==0){
+			if(emitter!=null){
+				emitter.emit=true;
+				emitter.transform.parent=null; // detach particle system
+				Destroy(emitter.gameObject, 3);
+			}
+			if(!oneShotAudio){//play death sound and destroy
+				splat.Play();
+				oneShotAudio=true;
+			}
+    		Destroy (gameObject,1.0);
+			Destroy (this,1.0);
+			Destroy (rigidbody,1.0);
 		}
-		if(!oneShotAudio){//play death sound and destroy
-			splat.Play();
-			oneShotAudio=true;
-		}
-    	Destroy (gameObject,2.0);
-		Destroy (this,2.0);
-		Destroy (rigidbody,2.0);
     }
     if(collision.gameObject.name.Contains("bullet")){
-    	if(!oneShotAudio){
-			splat.Play();
-			oneShotAudio=true;
+    	health=health-1;
+		if(health==2){renderer.material.mainTexture = tex2;}
+		if(health==1){renderer.material.mainTexture= tex3;}
+		if(health==0){
+    		if(!oneShotAudio){
+				splat.Play();
+				oneShotAudio=true;
+			}
+    		Destroy (gameObject);
+			Destroy (this);
+			Destroy (rigidbody);
 		}
-    	Destroy (gameObject);
-		Destroy (this);
-		Destroy (rigidbody);
     }
 }
 
 function kill(){
-	if (splat) splat.Play();
-
-	emitter.emit=true;
-	emitter.transform.parent=null; // detach particle system
-	Destroy(emitter.gameObject, 2);
-    Destroy (gameObject);
-	Destroy (this);
-	Destroy (rigidbody);
+	health=health-1;
+		if(health==2){renderer.material.mainTexture = tex2;}
+		if(health==1){renderer.material.mainTexture= tex3;}
+		if(health==0){
+			if(emitter!=null){
+				emitter.emit=true;
+				emitter.transform.parent=null; // detach particle system
+				Destroy(emitter.gameObject, 3);
+			}
+			if(!oneShotAudio){//play death sound and destroy
+				splat.Play();
+				oneShotAudio=true;
+			}
+    		Destroy (gameObject);
+			Destroy (this);
+			Destroy (rigidbody);
+		}
 }

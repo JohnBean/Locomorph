@@ -58,13 +58,14 @@ function kill(){
             	diff = (explosionPos - hit.rigidbody.position);    	
             	curDistance = Mathf.Sqrt(( Mathf.Abs(diff.x)*Mathf.Abs(diff.x))+(Mathf.Abs(diff.y)*Mathf.Abs(diff.y))); 
             	//print("cell:"+curDistance + " radius " + deathRadius);
-            	if (curDistance<=deathRadius+20){
-
-        			hit.GetComponent(cellMovement).kill();
-    			}
-        		else if (curDistance<=pushRadius+20){
+            	
+        		if (curDistance<=pushRadius+20){
         			//print("cell:"+curDistance + " radius " + pushRadius);
-           			hit.rigidbody.velocity=hit.rigidbody.velocity+(diff)*-11;//.x=100;//AddExplosionForce(power, explosionPos, radius, 2.0);
+        			if (curDistance<=deathRadius+20){
+
+        				hit.GetComponent(cellMovement).kill();
+    				}
+           			hit.rigidbody.velocity=hit.rigidbody.velocity+(diff.normalized)*-600;//.x=100;//AddExplosionForce(power, explosionPos, radius, 2.0);
     			}
     		}
     		diff = (explosionPos - GameObject.FindGameObjectWithTag("Player").rigidbody.position);    	

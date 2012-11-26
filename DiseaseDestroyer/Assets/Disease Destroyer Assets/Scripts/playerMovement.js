@@ -6,6 +6,7 @@ var speedSlowFactor=1;
 var accelSlowFactor =0;
 var slowDuration=3;
 var slowTime=0;
+
 public var slow=false;
 var speed : float;
 var bullet : Rigidbody;
