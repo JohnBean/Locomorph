@@ -2,8 +2,8 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Disease Destroyer Assets\Scripts\playerMovement.js">
     <Files>
+      <File FileName="Assets\Disease Destroyer Assets\Scripts\playerMovement.js" Line="43" Column="2" />
       <File FileName="Assets\Disease Destroyer Assets\Scripts\virusMovement.js" Line="1" Column="1" />
-      <File FileName="Assets\Disease Destroyer Assets\Scripts\playerMovement.js" Line="63" Column="8" />
       <File FileName="Assets\Disease Destroyer Assets\Scripts\pushLightScript.js" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
