@@ -80,7 +80,7 @@ function decide(){
 	var curDistance = diff.sqrMagnitude; 
 	
 	//if the player is nearby attack(or run) from it
-	if(curDistance<200 || GameObject.FindGameObjectsWithTag("Respawn").Length<1 ){
+	if(curDistance<300 || GameObject.FindGameObjectsWithTag("Respawn").Length<1 ){
 		//print(curDistance);
 		attack();//flee();
 	}
@@ -147,8 +147,10 @@ function OnCollisionEnter( collision : Collision )
 		kill();
     }
     //what happens when you touch the player
-    if(collision.gameObject.name=="Player"){
-    	kill();
+    if(collision.gameObject.name=="Character"){
+    	print("player collision");
+    	GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).startSlow();
+    	//kill();
     }
     //if you hit a cell after the game has started
     if(collision.gameObject.tag=="Respawn"&&(Time.realtimeSinceStartup>(this.startTime+2))){

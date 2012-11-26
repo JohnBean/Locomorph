@@ -147,5 +147,10 @@ function OnGUI() {
     	GUI.HorizontalScrollbar(Rect (Screen.width/2,20,200,20), 2000, vPercent*100,0, 100);//scale health//change virus bar based on percent remaining
     	gos = GameObject.FindGameObjectsWithTag("Finish"); //finds how many viruses are left
     	GUI.Label(Rect(((Screen.width/4)*2)+30,2,200,200),"Viruses Remaining: " + gos.length);//virus
+    	//print(GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).slow);
+    	if(GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).slow){
+    		print("slowed");
+    		GUI.Label(Rect(((Screen.width/2))+0,600,200,200),"Slowed");//virus
+    	}
     }
 }
