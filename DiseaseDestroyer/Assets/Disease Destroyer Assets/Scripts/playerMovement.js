@@ -6,6 +6,9 @@ var speed : float;
 var bullet : Rigidbody;
 var bulletSpeed : float;
 var clone : Transform;
+var burstLength : float;
+var burstAngle : float;
+var burstVel : float;
 private var startTime;
 var curBullet: Rigidbody;
 // Use this for initialization
@@ -33,6 +36,9 @@ function Update(){
 		 
 		
 	}	
+	if(Input.GetButtonDown("Fire2")){
+		burstAttack();
+	}
 }
 
 // FixedUpdate is called with physics
@@ -75,6 +81,22 @@ function addVel(velocity: Vector3){
 	rigidbody.velocity.x=velocity.x;
 	rigidbody.velocity.y=velocity.y;	
 }
+
+function burstAttack(){
+	var colliders = Physics.OverlapSphere(transform.position, burstLength);
+	for(var hit : Collider in colliders){
+		if(hit.rigidbody){
+			//Detects whether they're within the proper angle
+			var angle = Vector3.Angle(hit.rigidbody.position - transform.position, transform.forward);
+			if(angle <= burstAngle){
+				//BURST CODE HERE
+				var burstDir = Vector3.Normalize(hit.rigidbody.position - transform.position);
+				hit.rigidbody.velocity = hit.rigidbody.velocity + burstDir * burstVel;
+			}
+		}
+	}
+}
+
 
 //Player always faces the mouse, does some voodoo shit with raycasting to determine direction to face
 function PlayerFacing(){
