@@ -1,7 +1,7 @@
-public var maxX = 490;
-public var minX = -490;
-public var maxY = 490;
-public var minY = -490;
+private var maxX = 490;
+private var minX = -490;
+private var maxY = 490;
+private var minY = -490;
 var speed : float;
 var bullet : Rigidbody;
 var bulletSpeed : float;

@@ -9,13 +9,13 @@ var virus : Rigidbody;
 var virusClone: Transform;
 var cell : Rigidbody;
 var cellClone : Transform;
-var minCells: int;
-var numVirusStart : float;
+public var minCells: int;
+public var numVirusStart : float;
 var vPercent : float;
 var cPercent : float;
 var scoreVal: int;
 var multiplier :float=90;
-var numCellsStart : float;
+public var numCellsStart : float;
 var winScreen : Texture;
 var loseScreen : Texture;
 
@@ -35,7 +35,7 @@ function Start () {
 	var left= (Random.Range(-3,3)>0);
 	
 	numVirusStart=20.0;
-	numCellsStart=250;
+	numCellsStart=150;
 	minCells=0;
 	
 	while(cellGenerator<numCellsStart){
@@ -138,10 +138,14 @@ function OnGUI() {
 		}
     }
     else{
-    	GUI.Label(Rect(30,20,100,100),"Score = " + (scoreVal*100)*Mathf.Round(multiplier));//Score
+    	gos = GameObject.FindGameObjectsWithTag("Respawn");   
+    	GUI.Label(Rect(Screen.width/2-300,15,100,100),"Score = " + (scoreVal*100)*Mathf.Round(multiplier));//Score
     	GUI.backgroundColor = Color(255-(30*cPercent),1-(1*cPercent),1-(1*cPercent));//update color from red to brownred
    		GUI.HorizontalScrollbar(Rect (Screen.width/2-200,20,200,20), 0, cPercent*100,0, 100);//scale health
+   		GUI.Label(Rect(((Screen.width/4))+50,2,200,200),"Cells Remaining: " + gos.length);//cells
    		GUI.backgroundColor = Color(0, 255-(30*vPercent),2-(2*vPercent),50);//change color based on number of viruses, fade green to teal
     	GUI.HorizontalScrollbar(Rect (Screen.width/2,20,200,20), 2000, vPercent*100,0, 100);//scale health//change virus bar based on percent remaining
+    	gos = GameObject.FindGameObjectsWithTag("Finish"); //finds how many viruses are left
+    	GUI.Label(Rect(((Screen.width/4)*2)+30,2,200,200),"Viruses Remaining: " + gos.length);//virus
     }
 }
