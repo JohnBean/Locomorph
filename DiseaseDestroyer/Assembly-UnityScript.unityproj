@@ -49,6 +49,7 @@
      <Compile Include="Assets\Disease Destroyer Assets\Scripts\cameraScript.js" />
      <Compile Include="Assets\Disease Destroyer Assets\Scripts\cellMovement.js" />
      <Compile Include="Assets\Disease Destroyer Assets\Scripts\playerMovement.js" />
+     <Compile Include="Assets\Disease Destroyer Assets\Scripts\pushLightScript.js" />
      <Compile Include="Assets\Disease Destroyer Assets\Scripts\virusMovement.js" />
      <Compile Include="Assets\Standard Assets (Mobile)\Scripts\CameraRelativeControl.js" />
      <Compile Include="Assets\Standard Assets (Mobile)\Scripts\FirstPersonControl.js" />

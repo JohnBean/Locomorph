@@ -14,6 +14,8 @@ var clone : Transform;
 var burstLength : float;
 var burstAngle : float;
 var burstVel : float;
+var burstDuration : float;
+private var burstTime = 0.0;
 private var startTime;
 var curBullet: Rigidbody;
 // Use this for initialization
@@ -41,10 +43,14 @@ function Update(){
 		 
 		
 	}	
-	if(Input.GetButtonDown("Fire2")){
+	if(Input.GetButtonDown("Fire2") && burstTime <= 0){
+		burstTime = burstDuration;
+		GameObject.Find("PushLight").GetComponent("pushLightScript").push();
 		burstAttack();
 	}
-	
+	else{
+		burstTime = burstTime - Time.deltaTime;
+	}
 }
 
 // FixedUpdate is called with physics
@@ -110,7 +116,9 @@ function endSlow(){
 		accelSlowFactor=0;
 	}
 }
+
 function burstAttack(){
+	yield WaitForSeconds(burstDuration / 2);
 	var colliders = Physics.OverlapSphere(transform.position, burstLength);
 	for(var hit : Collider in colliders){
 		if(hit.rigidbody){
@@ -124,7 +132,6 @@ function burstAttack(){
 		}
 	}
 }
-
 
 //Player always faces the mouse, does some voodoo shit with raycasting to determine direction to face
 function PlayerFacing(){
