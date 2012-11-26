@@ -33,7 +33,7 @@ function Update(){
 	var numBullets = GameObject.FindGameObjectsWithTag("Bullet").Length;
 	if (Input.GetButtonDown("Fire1")) {
 		if(numBullets == 0){
-			curBullet = Instantiate(bullet, GameObject.Find("BulletSpawn").transform.position, Quaternion(0, 90, 0, 0));
+			curBullet = Instantiate(bullet, GameObject.Find("BulletSpawn").transform.position, Quaternion(0, 0, 0, 0));
 			curBullet.velocity = Vector3.Normalize(GameObject.Find("BulletSpawn").transform.position - transform.position) * bulletSpeed;// + GameObject.Find("Character").rigidbody.velocity;
 		}
 		else{
