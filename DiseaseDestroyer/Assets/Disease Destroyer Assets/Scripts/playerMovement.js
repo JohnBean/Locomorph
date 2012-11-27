@@ -16,17 +16,18 @@ var burstLength : float;
 var burstAngle : float;
 var burstVel : float;
 var burstDuration : float;
+
 private var burstTime = 0.0;
 private var startTime;
 var curBullet: Rigidbody;
 // Use this for initialization
 function Start () {
-	startTime=Time.realtimeSinceStartup;
+	startTime=Time.time;
 }
 function restart(){
 	rigidbody.position=Vector3.zero;
 	rigidbody.velocity=Vector3.zero;
-	startTime=Time.realtimeSinceStartup;
+	startTime=Time.time;
 }
 //Update is called once per frame
 function Update(){
@@ -56,7 +57,7 @@ function Update(){
 
 // FixedUpdate is called with physics
 function FixedUpdate () {
-	if((Time.realtimeSinceStartup>(this.startTime+1))){//only move if the game isn't over
+	if((Time.time>(this.startTime+1))){//only move if the game isn't over
 		PlayerFacing();
     	if(rigidbody.velocity.magnitude<350){
     		rigidbody.velocity.y =  rigidbody.velocity.y+(Input.GetAxis("Vertical") * (speed-accelSlowFactor));
@@ -97,20 +98,15 @@ function addVel(velocity: Vector3){
 }
 
 function startSlow(){
-	print("in slow");
 	if(!slow){
 		slow=true;
-		slowTime=Time.realtimeSinceStartup;
+		slowTime=Time.time;
 		speedSlowFactor=1;
 		accelSlowFactor=2.5;
-		print("slow started");
 	}
 }
 function endSlow(){
-	print(slowTime+slowDuration);
-	print(this.slowTime);
-	if(slow && Time.realtimeSinceStartup>this.slowTime+slowDuration){
-		print("unslowed");
+	if(slow && Time.time>this.slowTime+slowDuration){
 		slowTime=0;
 		slow=false;
 		speedSlowFactor=1;

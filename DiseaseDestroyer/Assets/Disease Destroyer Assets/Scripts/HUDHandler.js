@@ -20,6 +20,7 @@ var multiplier :float=90;
 public var numCellsStart : float;
 var winScreen : Texture;
 var loseScreen : Texture;
+var pauseScreen : Texture;
 var newFont : Font;
 
 function Start () {
@@ -37,9 +38,9 @@ function Start () {
 	var top= (Random.Range(-3,3)>0);
 	var left= (Random.Range(-3,3)>0);
 	
-	numVirusStart=50.0;
-	numCellsStart=150;
-	minCells=-1;
+	numVirusStart=30.0;
+	numCellsStart=200;
+	minCells=0;
 	
 	while(cellGenerator<numCellsStart){
 		if(cellGroup==0){
@@ -97,7 +98,14 @@ function Start () {
 }
 
 function Update () {
-
+	 if (Input.GetKeyDown("p")){	 	
+	 	if(Time.timeScale!=0){
+	 		Time.timeScale=0;
+	 	}
+	 	else{
+	 		Time.timeScale=1.0;
+	 	}
+	 }
 }
 
 function OnGUI() {
@@ -147,6 +155,9 @@ function OnGUI() {
 		}
     }
     else{
+    	if(Time.timeScale==0){
+	 		GUI.DrawTexture(Rect(Screen.width/2-200,Screen.height/2-200,400,400),pauseScreen,ScaleMode.ScaleToFit,true,1);
+	 	}
     	gos = GameObject.FindGameObjectsWithTag("Respawn");   
     	GUI.Label(Rect(Screen.width/2-300,15,100,100),"SCORE: " + (scoreVal*100)*Mathf.Round(multiplier));//Score
     	
@@ -159,7 +170,6 @@ function OnGUI() {
     	GUI.Label(Rect(((Screen.width/4)*2)+30,2,200,200),"VIRUSES REMAINING: " + gos.length);//virus
     	//print(GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).slow);
     	if(GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).slow){
-    		print("slowed");
     		GUI.Label(Rect(((Screen.width/2))+0,600,200,200),"SLOWED");//virus
     	}
     }

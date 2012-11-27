@@ -17,10 +17,11 @@ function Update () {
 	if(shakeTime > 0){
 		shakeTime = shakeTime - decrease * Time.deltaTime;
 		var cam = camera.main.transform;
-		
+
 		//cam.rotation.x += Random.Range(-shakeStrength, shakeStrength);
 		//cam.rotation.y += Random.Range(-shakeStrength, shakeStrength);
 		cam.rotation.z += Mathf.Sin(shakeTime) * (shakeStrength);
+
 	}
 	else{
 		camera.main.transform.rotation.x = camRotation.x;

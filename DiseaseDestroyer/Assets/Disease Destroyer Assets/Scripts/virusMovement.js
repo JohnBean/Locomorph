@@ -126,7 +126,7 @@ function kill(){
 function OnCollisionEnter( collision : Collision )
 {
 	if(this.startTime==null){
-		this.startTime=Time.realtimeSinceStartup;
+		this.startTime=Time.time;
 	}
 	//bounce off of border
 	if(collision.gameObject.name.Contains("Border")){
@@ -148,12 +148,10 @@ function OnCollisionEnter( collision : Collision )
     }
     //what happens when you touch the player
     if(collision.gameObject.name=="Character"){
-    	print("player collision");
     	GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).startSlow();
-    	//kill();
     }
     //if you hit a cell after the game has started
-    if(collision.gameObject.tag=="Respawn"&&(Time.realtimeSinceStartup>(this.startTime+2))){
+    if(collision.gameObject.tag=="Respawn"&&(Time.time>(this.startTime+2))){
     	attached=true;//sticking to the cell
     	var food=collision.gameObject;//the cell we've attached to
     	foodOffset= food.rigidbody.position-this.rigidbody.position;//distance from virus to cell so we know how far away to keep the virus when attached
@@ -184,13 +182,13 @@ function Start () {
     if (emitter) {
         emitter.emit = false;
     }
-    this.startTime=Time.realtimeSinceStartup;
+    this.startTime=Time.time;
 }
 
 // Update is called once per frame
 function Update () {
 	if(this.startTime==null){
-		this.startTime=Time.realtimeSinceStartup;
+		this.startTime=Time.time;
 	}
 	// change to random direction at random intervals
 	if(food!=null&&attached){

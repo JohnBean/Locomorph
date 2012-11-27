@@ -17,13 +17,13 @@ function Start () {
     if (emitter) {
         emitter.emit = false;
     }
-    this.startTime=Time.realtimeSinceStartup;
+    this.startTime=Time.time;
 }
  
 // Update is called once per frame
 function Update () {
 	if(this.startTime==null){
-		this.startTime=Time.realtimeSinceStartup;
+		this.startTime=Time.time;
 	}
 	//if(rigidbody.velocity.magnitude>=50){
 	//	rigidbody.velocity=rigidbody.velocity*.95;
@@ -64,12 +64,12 @@ function OnCollisionEnter(collision : Collision) {
 		}
     }
     if(this.startTime==null){
-		this.startTime=Time.realtimeSinceStartup;
+		this.startTime=Time.time;
 	}/*
 	if(collision.gameObject.name.Contains("Character")){
 		renderer.material.mainTexture = tex3;
 	}*/
-	if(collision.gameObject.name.Contains("Virus")&&(Time.realtimeSinceStartup>(this.startTime+2))){//destroy 2 seconds after a viruses touch
+	if(collision.gameObject.name.Contains("Virus")&&(Time.time>(this.startTime+2))){//destroy 2 seconds after a viruses touch
 		health=health-1;
 		if(health==2){renderer.material.mainTexture = tex2;}
 		if(health==1){renderer.material.mainTexture= tex3;}

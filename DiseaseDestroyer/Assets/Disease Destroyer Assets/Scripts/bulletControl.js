@@ -41,7 +41,7 @@ function OnCollisionEnter(collision : Collision) {
 }
 function kill(){
 	//Causes camera to shake
-	GameObject.Find("Main Camera").GetComponent("cameraScript").shakeTime = (10.0 / Vector3.Distance(gameObject.rigidbody.position, GameObject.Find("Character").rigidbody.position));
+	GameObject.Find("Main Camera").GetComponent("cameraScript").shakeTime = (5.0 / Vector3.Distance(gameObject.rigidbody.position, GameObject.Find("Character").rigidbody.position));
 	var explosionPos : Vector3 = gameObject.rigidbody.position;
     		var colliders = GameObject.FindGameObjectsWithTag("Finish");
     		for (var hit : GameObject in colliders) {
@@ -73,9 +73,7 @@ function kill(){
     		diff = (explosionPos - GameObject.FindGameObjectWithTag("Player").rigidbody.position);    	
             curDistance = Mathf.Sqrt(( Mathf.Abs(diff.x)*Mathf.Abs(diff.x))+(Mathf.Abs(diff.y)*Mathf.Abs(diff.y))); 
     		if(curDistance<=pushRadius+10){
-    			//print("player"+GameObject.FindGameObjectWithTag("Player").rigidbody.velocity);
     			var power=65+(55*((pushRadius+10)/diff.magnitude));
-    			print("dif"+diff.magnitude+ " power"+power);
     			GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).addVel(diff.normalized*-(power));//.rigidbody.position = diff*-2000;
     		}
     //Destroys object in question if not the player or a wall
