@@ -6,7 +6,9 @@ public var minY = -480;
 var xDir: int;
 var yDir: int;
 var virus : Rigidbody;
+var dummyvirus: Rigidbody;
 var virusClone: Transform;
+var dummyClone:Transform;
 var cell : Rigidbody;
 var cellClone : Transform;
 public var minCells: int;
@@ -88,6 +90,10 @@ function Start () {
 	for(var virusGenerator = 0; virusGenerator<numVirusStart;virusGenerator++){//spawn viruses at random locations
 		var virusClone : Rigidbody = Instantiate(virus, Vector3(Random.Range(minX+100,maxX-100),Random.Range(minY+100,maxY-100),0), virusClone.rotation);
 	}
+	/*for(var dummyGenerator=0; dummyGenerator<10; dummyGenerator++){
+		var dummyClone: Rigidbody = Instantiate(dummyvirus,Vector3(Random.Range(-1000,-500),Random.Range(500,1000),0),dummyClone.rotation);
+
+	}*/
 }
 
 function Update () {
