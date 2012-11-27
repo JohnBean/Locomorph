@@ -18,6 +18,7 @@ var multiplier :float=90;
 public var numCellsStart : float;
 var winScreen : Texture;
 var loseScreen : Texture;
+var newFont : Font;
 
 function Start () {
 	var cellGenerator=0;
@@ -103,6 +104,8 @@ function OnGUI() {
     gos = GameObject.FindGameObjectsWithTag("Finish"); //finds how many viruses are left
 	vPercent = gos.Length/numVirusStart;
     
+    GUI.skin.font = newFont;
+    
     if(multiplier>1){
     	if(cPercent>=0&&vPercent>=0){
     		multiplier=multiplier-(Time.fixedDeltaTime/2.5);
@@ -139,18 +142,19 @@ function OnGUI() {
     }
     else{
     	gos = GameObject.FindGameObjectsWithTag("Respawn");   
-    	GUI.Label(Rect(Screen.width/2-300,15,100,100),"Score = " + (scoreVal*100)*Mathf.Round(multiplier));//Score
+    	GUI.Label(Rect(Screen.width/2-300,15,100,100),"SCORE: " + (scoreVal*100)*Mathf.Round(multiplier));//Score
+    	
     	GUI.backgroundColor = Color(255-(30*cPercent),1-(1*cPercent),1-(1*cPercent));//update color from red to brownred
    		GUI.HorizontalScrollbar(Rect (Screen.width/2-200,20,200,20), 0, cPercent*100,0, 100);//scale health
-   		GUI.Label(Rect(((Screen.width/4))+50,2,200,200),"Cells Remaining: " + gos.length);//cells
+   		GUI.Label(Rect(((Screen.width/4))+50,2,200,200),"CELLS REMAINING: " + gos.length);//cells
    		GUI.backgroundColor = Color(0, 255-(30*vPercent),2-(2*vPercent),50);//change color based on number of viruses, fade green to teal
     	GUI.HorizontalScrollbar(Rect (Screen.width/2,20,200,20), 2000, vPercent*100,0, 100);//scale health//change virus bar based on percent remaining
     	gos = GameObject.FindGameObjectsWithTag("Finish"); //finds how many viruses are left
-    	GUI.Label(Rect(((Screen.width/4)*2)+30,2,200,200),"Viruses Remaining: " + gos.length);//virus
+    	GUI.Label(Rect(((Screen.width/4)*2)+30,2,200,200),"VIRUSES REMAINING: " + gos.length);//virus
     	//print(GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).slow);
     	if(GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).slow){
     		print("slowed");
-    		GUI.Label(Rect(((Screen.width/2))+0,600,200,200),"Slowed");//virus
+    		GUI.Label(Rect(((Screen.width/2))+0,600,200,200),"SLOWED");//virus
     	}
     }
 }
