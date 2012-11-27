@@ -42,6 +42,7 @@ function OnCollisionEnter(collision : Collision) {
 function kill(){
 	//Causes camera to shake
 	GameObject.Find("Main Camera").GetComponent("cameraScript").shakeTime = (5.0 / Vector3.Distance(gameObject.rigidbody.position, GameObject.Find("Character").rigidbody.position));
+	GameObject.Find("Main Camera").GetComponent("cameraScript").currShakeTime = 0.0;
 	var explosionPos : Vector3 = gameObject.rigidbody.position;
     		var colliders = GameObject.FindGameObjectsWithTag("Finish");
     		for (var hit : GameObject in colliders) {
