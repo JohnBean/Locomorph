@@ -22,6 +22,9 @@ var winScreen : Texture;
 var loseScreen : Texture;
 var pauseScreen : Texture;
 var newFont : Font;
+enum gameState {splash, game, pause, win, lose};
+var state : gameState;
+
 
 function Start () {
 	for(var psudoRand=0; psudoRand<Time.time*500;psudoRand++){
@@ -53,13 +56,32 @@ function spawnCells(){
 }
 
 function Update () {
+	 //Key inputs for changing game states
 	 if (Input.GetKeyDown("p")){	 	
-	 	if(Time.timeScale!=0){
-	 		Time.timeScale=0;
+	 	print(state);
+	 	if(state == gameState.game){
+	 		state = gameState.pause;
 	 	}
-	 	else{
-	 		Time.timeScale=1.0;
+	 	else if(state == gameState.pause){
+	 		state = gameState.game;
 	 	}
+	 }
+	 
+	 //Handling game states
+	 if(state == gameState.game){
+	 	Time.timeScale = 1.0;
+	 }
+	 else if(state == gameState.pause){
+	 	Time.timeScale = 0.0;
+	 }
+	 else if(state == gameState.splash){
+	 	
+	 }
+	 else if(state == gameState.win){
+	 	
+	 }
+	 else if(state == gameState.lose){
+	 	
 	 }
 }
 
