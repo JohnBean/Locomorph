@@ -27,6 +27,7 @@ var state : gameState;
 
 
 function Start () {
+	state=gameState.game;
 	for(var psudoRand=0; psudoRand<Time.time*500;psudoRand++){
 		Random.seed = psudoRand;
 	}
@@ -116,12 +117,12 @@ function OnGUI() {
     //--------------------------WIN AND LOSE SCREENS-----------------------
     if(state == gameState.win || state == gameState.lose){
 		if(state == gameState.win){
-			GUI.DrawTexture(Rect(Screen.width/2-200,Screen.height/2-200,400,400),winScreen,ScaleMode.ScaleToFit,true,1);
+    	GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),winScreen,ScaleMode.ScaleToFit,true,1.777f);
 		}
 		if(state == gameState.lose){
-			GUI.DrawTexture(Rect(Screen.width/2-200,Screen.height/2-200,400,400),loseScreen,ScaleMode.ScaleToFit,true,1);
+    	GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),loseScreen,ScaleMode.ScaleToFit,true,1.777f);
 		}
-	    if (GUI.Button (Rect(Screen.width/2-50,Screen.height/2+100,100,50), "Play")) {
+	    if (Input.GetKeyDown ("space")) {
 	    	gos = GameObject.FindGameObjectsWithTag("Respawn");    
 	    	// Iterate through them and find the closest one
 	   		for (var go : GameObject in gos)  {
@@ -140,10 +141,13 @@ function OnGUI() {
     
     //-------------------PAUSE SCREEN---------------------
     if(state == gameState.pause){
-    	GUI.DrawTexture(Rect(Screen.width/2-200,Screen.height/2-200,400,400),pauseScreen,ScaleMode.ScaleToFit,true,1);
+    	GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),pauseScreen,ScaleMode.ScaleToFit,true,1.777f);
     }
     //-------------------SPLASH SCREEN-------------------------
-    
+    if(state==gameState.splash){
+       // GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),splashScreen,ScaleMode.ScaleToFit,true,1.777f);
+
+    }
     
     
     
@@ -160,7 +164,7 @@ function OnGUI() {
     		scoreVal= (numVirusStart-gos.Length);
     	}
     }
-    
+    if(state==gameState.game){
 	gos = GameObject.FindGameObjectsWithTag("Respawn");   
 	GUI.Label(Rect(Screen.width/2-300,15,100,100),"SCORE: " + (scoreVal*100)*Mathf.Round(multiplier));//Score
 	
@@ -174,5 +178,5 @@ function OnGUI() {
 	//print(GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).slow);
 	if(GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).slow){
 		GUI.Label(Rect(((Screen.width/2))+0,600,200,200),"SLOWED");//virus
-	}
+	}}
 }
