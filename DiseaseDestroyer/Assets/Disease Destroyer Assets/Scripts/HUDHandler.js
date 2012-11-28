@@ -24,70 +24,13 @@ var pauseScreen : Texture;
 var newFont : Font;
 
 function Start () {
-	var cellGenerator=0;
-	var cellGroup=0;
-	multiplier=90;
-	for(var psudoRand=0; psudoRand<Time.time*2;psudoRand++){
-		Random.Range(-2,2);//trying to change what random is used when starting creation
+	for(var psudoRand=0; psudoRand<Time.time*500;psudoRand++){
+		Random.seed = psudoRand;
 	}
-	
-	//Long yet still rather bad cell placement 
-	var groupSize= (Random.Range(0,6));
-	var xLoc= Random.Range(1,maxX);
-	var yLoc= Random.Range(1,maxY);
-	var top= (Random.Range(-3,3)>0);
-	var left= (Random.Range(-3,3)>0);
 	
 	numVirusStart=30.0;
-	numCellsStart=200;
-	minCells=0;
 	
-	while(cellGenerator<numCellsStart){
-		if(cellGroup==0){
-			if(top){//should we be placing cells above or below our location(move toward center)
-				yDir=1;
-			}
-			else{
-				yDir=-1;
-				yLoc=-yLoc;
-			}
-			
-			if(left){
-				xDir=1;
-				xLoc= -xLoc;
-			}
-			else{
-				xDir=-1;
-			}
-			
-			if(xLoc>0){
-				xDir=-1;
-			}
-			else{
-				xDir=1;
-			}
-			
-			if(yLoc>0){
-				yDir=-1;
-			}
-			else{
-				yDir=1;
-			}
-		}	
-		var cellClone : Rigidbody = Instantiate(cell, Vector3(xLoc,yLoc,0), cellClone.rotation);//create the cell at the location
-
-		yLoc=yLoc+((55+Random.Range(0,10))*yDir);//change to a new spot
-		xLoc=xLoc+((55+Random.Range(0,10))*xDir);
-		if((Mathf.Abs(xLoc)>(maxX-30)) || (Mathf.Abs(yLoc)>(maxY-30)) || cellGroup >= groupSize){//if it's a new group choose a new place and direction to put the group
-			groupSize= (Random.Range(0,10));
-			xLoc= Random.Range(1,maxX);
-			yLoc= Random.Range(1,maxY);
-			top= (Random.Range(-3,3)>0);
-			left= (Random.Range(-3,3)>0);
-			cellGroup=0;
-		}
-		cellGenerator=cellGenerator+1;//go until you have the desired number of cells
-	}
+	spawnCells();
 	for(var virusGenerator = 0; virusGenerator<numVirusStart;virusGenerator++){//spawn viruses at random locations
 		var virusClone : Rigidbody = Instantiate(virus, Vector3(Random.Range(minX+100,maxX-100),Random.Range(minY+100,maxY-100),0), virusClone.rotation);
 	}
@@ -95,6 +38,18 @@ function Start () {
 		var dummyClone: Rigidbody = Instantiate(dummyvirus,Vector3(Random.Range(-1000,-500),Random.Range(500,1000),0),dummyClone.rotation);
 
 	}*/
+}
+
+function spawnCells(){
+	//Spawn cells in a grid, then give them all random velocities
+	for(var i = 0; i < Mathf.Sqrt(numCellsStart); i++){
+		for(var j = 0; j < Mathf.Sqrt(numCellsStart); j++){
+			var spawnX = (i / Mathf.Sqrt(numCellsStart) * 1000) - 500;
+			var spawnY = (j / Mathf.Sqrt(numCellsStart) * 1000) - 500;
+			var cellClone : Rigidbody = Instantiate(cell, Vector3(spawnX, spawnY, 0), cellClone.rotation);
+			cellClone.rigidbody.velocity = Vector3(Random.Range(-1.0, 1.0) * 1000, Random.Range(-1, 1) * 1000, 0);
+		}
+	}
 }
 
 function Update () {
