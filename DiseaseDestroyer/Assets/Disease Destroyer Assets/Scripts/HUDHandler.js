@@ -21,13 +21,16 @@ public var numCellsStart : float;
 var winScreen : Texture;
 var loseScreen : Texture;
 var pauseScreen : Texture;
+var splashScreen: Texture;
+var intro1 : Texture;
+var intro2 : Texture;
 var newFont : Font;
-enum gameState {splash, game, pause, win, lose};
+enum gameState {splash, game, pause, win, lose, intro1, intro2};
 var state : gameState;
 
 
+
 function Start () {
-	state=gameState.game;
 	for(var psudoRand=0; psudoRand<Time.time*500;psudoRand++){
 		Random.seed = psudoRand;
 	}
@@ -90,13 +93,34 @@ function Update () {
 	 	Time.timeScale = 0.0;
 	 }
 	 else if(state == gameState.splash){
-	 	
+	 	Time.timeScale = 0.0;
+	 	if(Input.GetMouseButtonDown(1)){
+	 		
+	 		state=gameState.intro1;
+	 	}
 	 }
+	 else if(state == gameState.intro1){
+	 	Time.timeScale = 0.0;
+	 	if(Input.GetMouseButton(1)){
+	 		state=gameState.intro2;
+	 	} else if (Input.GetMouseButton(2)){
+	 		state=gameState.splash;
+	 	}
+	 }
+	 else if(state == gameState.intro2){
+	 	Time.timeScale = 0.0;
+	 	if(Input.GetMouseButton(1)){
+	 		state=gameState.pause;
+	 	} else if (Input.GetMouseButton(2)){
+			state=gameState.intro1;
+	 	}
+	 }
+	 
 	 else if(state == gameState.win){
-	 	
+
 	 }
 	 else if(state == gameState.lose){
-	 	
+
 	 }
 }
 
@@ -145,7 +169,15 @@ function OnGUI() {
     }
     //-------------------SPLASH SCREEN-------------------------
     if(state==gameState.splash){
-       // GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),splashScreen,ScaleMode.ScaleToFit,true,1.777f);
+       GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),splashScreen,ScaleMode.ScaleToFit,true,1.777f);
+
+    }
+    if(state==gameState.intro1){
+       GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),intro1,ScaleMode.ScaleToFit,true,1.777f);
+
+    }
+    if(state==gameState.intro2){
+       GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),intro2,ScaleMode.ScaleToFit,true,1.777f);
 
     }
     
