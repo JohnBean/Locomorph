@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Disease Destroyer Assets\Scripts\playerMovement.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Disease Destroyer Assets\Scripts\HUDHandler.js">
     <Files>
+      <File FileName="Assets\Disease Destroyer Assets\Scripts\HUDHandler.js" Line="213" Column="60" />
       <File FileName="Assets\Disease Destroyer Assets\Scripts\playerMovement.js" Line="48" Column="61" />
-      <File FileName="Assets\Disease Destroyer Assets\Scripts\HUDHandler.js" Line="1" Column="1" />
       <File FileName="Assets\Disease Destroyer Assets\Scripts\cameraScript.js" Line="1" Column="1" />
       <File FileName="Assets\Disease Destroyer Assets\Scripts\cellMovement.js" Line="1" Column="1" />
       <File FileName="Assets\Disease Destroyer Assets\Scripts\virusMovement.js" Line="1" Column="1" />

@@ -15,7 +15,7 @@ public var minCells: int;
 public var numVirusStart : float;
 var vPercent : float;
 var cPercent : float;
-var scoreVal: int;
+var scoreVal: float;
 var multiplier :float=90;
 public var numCellsStart : float;
 var winScreen : Texture;
@@ -27,7 +27,8 @@ var intro2 : Texture;
 var newFont : Font;
 enum gameState {splash, game, pause, win, lose, intro1, intro2};
 var state : gameState;
-
+var startTime : float;
+var startPop :float;
 
 
 function Start () {
@@ -66,7 +67,9 @@ function Update () {
      cPercent= (gos.Length-minCells)/(numCellsStart-minCells);
      gos = GameObject.FindGameObjectsWithTag("Finish"); //finds how many viruses are left
 	 vPercent = gos.Length/numVirusStart;
-	 
+	 gos = GameObject.FindGameObjectsWithTag("Respawn");  
+	 startPop=6973738433;
+     scoreVal=startPop-((numCellsStart-gos.length)*10000000)-(startTime*20000000);
 	 //Conditions for changing game states
 	 if (Input.GetKeyDown("p")){	 	//Pausing and unpausing
 	 	print(state);
@@ -88,6 +91,7 @@ function Update () {
 	 //Handling game states
 	 if(state == gameState.game){
 	 	Time.timeScale = 1.0;
+	 	
 	 }
 	 else if(state == gameState.pause){
 	 	Time.timeScale = 0.0;
@@ -111,6 +115,7 @@ function Update () {
 	 	Time.timeScale = 0.0;
 	 	if(Input.GetMouseButtonDown(1)){
 	 		state=gameState.game;
+	 		startTime=Time.time;
 	 	} else if (Input.GetMouseButtonDown(2)){
 			state=gameState.intro1;
 	 	}
@@ -147,6 +152,7 @@ function OnGUI() {
     	GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),loseScreen,ScaleMode.ScaleToFit,true,1.777f);
 		}
 	    if (Input.GetKeyDown ("space")) {
+	    	startTime=Time.time;
 	    	gos = GameObject.FindGameObjectsWithTag("Respawn");    
 	    	// Iterate through them and find the closest one
 	   		for (var go : GameObject in gos)  {
@@ -184,7 +190,7 @@ function OnGUI() {
     
     
     
-    if(multiplier>1){
+    /*if(multiplier>1){
     	if(cPercent>=0&&vPercent>=0){
     		multiplier=multiplier-(Time.fixedDeltaTime/2.5);
     		scoreVal=(numVirusStart-gos.Length);
@@ -195,10 +201,17 @@ function OnGUI() {
     		multiplier=1;
     		scoreVal= (numVirusStart-gos.Length);
     	}
-    }
+    }*/
+    
+    
     if(state==gameState.game){
+    
+    
 	gos = GameObject.FindGameObjectsWithTag("Respawn");   
-	GUI.Label(Rect(Screen.width/2-300,15,100,100),"SCORE: " + (scoreVal*100)*Mathf.Round(multiplier));//Score
+	var longScore:long=scoreVal;
+	GUI.Label(Rect(Screen.width/2-500,15,300,200),"PROJECTED EARTH POPULATION: ");
+	GUI.Label(Rect(Screen.width/2-500,30,300,200),longScore+" humans surviving"); //Score
+
 	
 	GUI.backgroundColor = Color(255-(30*cPercent),1-(1*cPercent),1-(1*cPercent));//update color from red to brownred
 	GUI.HorizontalScrollbar(Rect (Screen.width/2-200,20,200,20), 0, cPercent*100,0, 100);//scale health
