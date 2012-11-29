@@ -45,7 +45,7 @@ function Update(){
 		 
 		
 	}	
-	if(Input.GetButtonDown("Fire2") && burstTime <= 0){
+	if((Input.GetButtonDown("Fire2") || Input.GetKeyDown("space")) && burstTime <= 0){
 		burstTime = burstDuration;
 		GameObject.Find("PushLight").GetComponent("pushLightScript").push();
 		burstAttack();

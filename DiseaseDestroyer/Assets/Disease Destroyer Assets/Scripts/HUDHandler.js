@@ -101,17 +101,17 @@ function Update () {
 	 }
 	 else if(state == gameState.intro1){
 	 	Time.timeScale = 0.0;
-	 	if(Input.GetMouseButton(1)){
+	 	if(Input.GetMouseButtonDown(1)){
 	 		state=gameState.intro2;
-	 	} else if (Input.GetMouseButton(2)){
+	 	} else if (Input.GetMouseButtonDown(2)){
 	 		state=gameState.splash;
 	 	}
 	 }
 	 else if(state == gameState.intro2){
 	 	Time.timeScale = 0.0;
-	 	if(Input.GetMouseButton(1)){
-	 		state=gameState.pause;
-	 	} else if (Input.GetMouseButton(2)){
+	 	if(Input.GetMouseButtonDown(1)){
+	 		state=gameState.game;
+	 	} else if (Input.GetMouseButtonDown(2)){
 			state=gameState.intro1;
 	 	}
 	 }
