@@ -55,6 +55,11 @@ function spawnCells(){
 			var spawnX = (i / Mathf.Sqrt(numCellsStart) * 1000) - 500;
 			var spawnY = (j / Mathf.Sqrt(numCellsStart) * 1000) - 500;
 			var cellClone : Rigidbody = Instantiate(cell, Vector3(spawnX, spawnY, 0), cellClone.rotation);
+			for(var psudoRand=0; psudoRand<Time.time*500;psudoRand++){
+				Random.seed = psudoRand;
+			}
+			
+			//cellClone.rigidbody.rotation= Quaternion.LookRotation(Vector3(0,0,0));
 			cellClone.rigidbody.velocity = Vector3(Random.Range(-1.0, 1.0) * 1000, Random.Range(-1, 1) * 1000, 0);
 		}
 	}

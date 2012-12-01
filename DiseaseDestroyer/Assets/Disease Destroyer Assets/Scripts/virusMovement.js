@@ -1,5 +1,5 @@
-var speed  = 35;//movement multiplier
-var maxSpeed=45;//can't get shunted too fast
+var speed  = 55;//movement multiplier
+var maxSpeed=65;//can't get shunted too fast
 var splat : AudioClip;//death sound
 public var attached=false;
 public var food;//the cell nearest
@@ -80,7 +80,7 @@ function decide(){
 	var curDistance = diff.sqrMagnitude; 
 	
 	//if the player is nearby attack(or run) from it
-	if(curDistance<300 || GameObject.FindGameObjectsWithTag("Respawn").Length<1 ){
+	if(curDistance<500 || GameObject.FindGameObjectsWithTag("Respawn").Length<1 ){
 		//print(curDistance);
 		attack();//flee();
 	}
