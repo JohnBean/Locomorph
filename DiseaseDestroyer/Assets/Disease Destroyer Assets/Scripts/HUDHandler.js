@@ -31,25 +31,57 @@ enum gameState {splash, game, pause, win, lose, intro1, intro2};
 var state : gameState;
 var startTime : float;
 var startPop :float;
-
-
+var lastTime: float=0.0;
+var newTime: float;
+var maxVirus:float=0;
+public var timeStep: float =10.0;
 function Start () {
 	for(var psudoRand=0; psudoRand<Time.time*500;psudoRand++){
 		Random.seed = psudoRand;
 	}
 	
-	numVirusStart=30.0;
+	numVirusStart=20;
 	
 	spawnCells();
 	for(var virusGenerator = 0; virusGenerator<numVirusStart;virusGenerator++){//spawn viruses at random locations
 		var virusClone : Rigidbody = Instantiate(virus, Vector3(Random.Range(minX+100,maxX-100),Random.Range(minY+100,maxY-100),0), virusClone.rotation);
 	}
+	
 	/*for(var dummyGenerator=0; dummyGenerator<10; dummyGenerator++){
 		var dummyClone: Rigidbody = Instantiate(dummyvirus,Vector3(Random.Range(-1000,-500),Random.Range(500,1000),0),dummyClone.rotation);
 
 	}*/
 }
 
+function corruptCell(){
+	if(lastTime==0){
+	 		print(Time.time);
+	 		lastTime=Time.time;
+			newTime=Time.time+timeStep;
+		}
+
+	 	if(Time.time>=newTime){
+	 		print("starting corruption");
+	 		var cellArray : GameObject[];
+   			cellArray = GameObject.FindGameObjectsWithTag("Respawn"); 
+    		var farthest : GameObject; 
+    		var distance = 0; 
+    		var position = transform.position; 
+    
+    		// Iterate through them and find the closest one
+    		for (var cell : GameObject in cellArray)  {
+        		var diff = (cell.transform.position - position);
+        		var curDistance = diff.sqrMagnitude; 
+        		if (curDistance > distance) { 
+            		farthest = cell; 
+            		distance = curDistance; 
+        		} 
+    		}
+    		farthest.GetComponent(cellMovement).corrupt();
+	 		lastTime=Time.time;
+			newTime=Time.time+timeStep;
+	 	}
+}
 function spawnCells(){
 	//Spawn cells in a grid, then give them all random velocities
 	for(var i = 0; i < Mathf.Sqrt(numCellsStart); i++){
@@ -99,6 +131,7 @@ function Update () {
 	 //Handling game states
 	 if(state == gameState.game){
 	 	Time.timeScale = 1.0;
+	 	corruptCell();
 	 	
 	 }
 	 else if(state == gameState.pause){
@@ -146,9 +179,19 @@ function OnGUI() {
 	var style : GUIStyle;
 	gos = GameObject.FindGameObjectsWithTag("Respawn"); //How many Cells remain
     cPercent= (gos.Length-minCells)/(numCellsStart-minCells);
-    gos = GameObject.FindGameObjectsWithTag("Finish"); //finds how many viruses are left
-	vPercent = gos.Length/numVirusStart;
     
+    gos = GameObject.FindGameObjectsWithTag("Finish"); //finds how many viruses are left	
+    if(maxVirus!=0&&gos.Length>maxVirus){
+    	maxVirus=gos.Length;
+    }
+    if(vPercent>=1){
+    	vPercent=1;
+    	if(maxVirus==0){
+    		maxVirus=gos.Length;
+    	}
+    }
+	vPercent = gos.length/maxVirus;
+	
     GUI.skin.font = newFont;
     
     //--------------------------WIN AND LOSE SCREENS-----------------------

@@ -1,15 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Disease Destroyer Assets\Scripts\playerMovement.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Disease Destroyer Assets\Scripts\HUDHandler.js">
     <Files>
-      <File FileName="Assets\Disease Destroyer Assets\Scripts\cellMovement.js" Line="91" Column="70" />
+      <File FileName="Assets\Disease Destroyer Assets\Scripts\HUDHandler.js" Line="134" Column="18" />
+      <File FileName="Assets\Disease Destroyer Assets\Scripts\cellMovement.js" Line="90" Column="2" />
       <File FileName="Assets\Disease Destroyer Assets\Scripts\whiteCellMovement.js" Line="1" Column="1" />
-      <File FileName="Assets\Disease Destroyer Assets\Scripts\HUDHandler.js" Line="91" Column="3" />
       <File FileName="Assets\Disease Destroyer Assets\Scripts\playerMovement.js" Line="20" Column="28" />
       <File FileName="Assets\Disease Destroyer Assets\Scripts\cameraScript.js" Line="1" Column="1" />
-      <File FileName="Assets\Disease Destroyer Assets\Scripts\virusMovement.js" Line="118" Column="68" />
+      <File FileName="Assets\Disease Destroyer Assets\Scripts\virusMovement.js" Line="42" Column="2" />
       <File FileName="Assets\Disease Destroyer Assets\Scripts\pushLightScript.js" Line="1" Column="1" />
-      <File FileName="Assets\Disease Destroyer Assets\Scripts\bulletControl.js" Line="3" Column="1" />
+      <File FileName="Assets\Disease Destroyer Assets\Scripts\bulletControl.js" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

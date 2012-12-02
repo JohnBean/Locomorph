@@ -9,6 +9,7 @@ private var emitter: ParticleEmitter;
 public var tex1: Texture2D;
 public var tex2: Texture2D;
 public var tex3: Texture2D;
+public var tex4: Texture2D;
 private var startTime;
 var virus : Rigidbody;
 // Use this for initialization
@@ -75,7 +76,19 @@ function OnCollisionEnter(collision : Collision) {
     }
  
 }
-
+function corrupt(){
+	renderer.material.mainTexture= tex4;
+	if(emitter!=null){
+		emitter.emit=true;
+		emitter.transform.parent=null; // detach particle system
+		Destroy(emitter.gameObject, 3);
+	}
+	if (splat) AudioSource.PlayClipAtPoint(splat, transform.position);
+	spawnVirus();
+	Destroy (gameObject);
+	Destroy (this);
+	Destroy (rigidbody);
+}
 function kill(spawn: boolean){
 	health=health-1;
 		if(health==2){renderer.material.mainTexture = tex2;}
