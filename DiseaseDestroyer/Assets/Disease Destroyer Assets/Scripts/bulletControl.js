@@ -66,7 +66,12 @@ function kill(){
         			//print("cell:"+curDistance + " radius " + pushRadius);
         			if (curDistance<=deathRadius+20){
 
-        				hit.GetComponent(cellMovement).kill();
+        				if(hit.GetComponent(cellMovement)!=null){
+        					hit.GetComponent(cellMovement).kill(true);
+        				}
+        				else{
+        					hit.GetComponent(whiteCellMovement).kill();
+        				}
     				}
            			hit.rigidbody.velocity=hit.rigidbody.velocity+(diff.normalized)*-600;//.x=100;//AddExplosionForce(power, explosionPos, radius, 2.0);
     			}

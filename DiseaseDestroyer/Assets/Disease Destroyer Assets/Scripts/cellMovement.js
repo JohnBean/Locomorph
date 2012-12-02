@@ -10,8 +10,9 @@ public var tex1: Texture2D;
 public var tex2: Texture2D;
 public var tex3: Texture2D;
 private var startTime;
+var virus : Rigidbody;
 // Use this for initialization
-
+var virusClone: Transform;
 function Start () {
 	emitter = GetComponentInChildren(ParticleEmitter);   
     if (emitter) {
@@ -70,45 +71,17 @@ function OnCollisionEnter(collision : Collision) {
 		renderer.material.mainTexture = tex3;
 	}*/
 	if(collision.gameObject.name.Contains("Virus")&&(Time.time>(this.startTime+2))){//destroy 2 seconds after a viruses touch
-		health=health-1;
-		if(health==2){renderer.material.mainTexture = tex2;}
-		if(health==1){renderer.material.mainTexture= tex3;}
-		if(health==0){
-			if(emitter!=null){
-				emitter.emit=true;
-				emitter.transform.parent=null; // detach particle system
-				Destroy(emitter.gameObject, 3);
-			}
-			if(!oneShotAudio){//play death sound and destroy
-				splat.Play();
-				oneShotAudio=true;
-			}
-    		Destroy (gameObject,1.0);
-			Destroy (this,1.0);
-			Destroy (rigidbody,1.0);
-		}
+		kill(false);
     }
-    if(collision.gameObject.name.Contains("bullet")){
-    	health=health-1;
-		if(health==2){renderer.material.mainTexture = tex2;}
-		if(health==1){renderer.material.mainTexture= tex3;}
-		if(health==0){
-    		if(!oneShotAudio){
-				splat.Play();
-				oneShotAudio=true;
-			}
-    		Destroy (gameObject);
-			Destroy (this);
-			Destroy (rigidbody);
-		}
-    }
+ 
 }
 
-function kill(){
+function kill(spawn: boolean){
 	health=health-1;
 		if(health==2){renderer.material.mainTexture = tex2;}
 		if(health==1){renderer.material.mainTexture= tex3;}
 		if(health==0){
+			
 			if(emitter!=null){
 				emitter.emit=true;
 				emitter.transform.parent=null; // detach particle system
@@ -118,8 +91,18 @@ function kill(){
 				splat.Play();
 				oneShotAudio=true;
 			}
+			if(spawn)spawnVirus();
+			//virusClone=Instantiate(virus, Vector3(rigidbody.x,rigidbody.y,rigidbody.z));
     		Destroy (gameObject);
 			Destroy (this);
 			Destroy (rigidbody);
+			
 		}
+		this.startTime=Time.time;
+}
+function spawnVirus(){
+	var newx=rigidbody.position.x;
+	var newy=rigidbody.position.y;
+	var virusClone : Rigidbody = Instantiate(virus, Vector3(newx,newy,0), virusClone.rotation);
+	virusClone.transform.parent=null;
 }

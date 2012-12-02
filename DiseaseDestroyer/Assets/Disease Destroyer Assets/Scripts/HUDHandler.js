@@ -9,6 +9,8 @@ var virus : Rigidbody;
 var dummyvirus: Rigidbody;
 var virusClone: Transform;
 var dummyClone:Transform;
+var whiteCell : Rigidbody;
+var whiteCellClone : Transform;
 var cell : Rigidbody;
 var cellClone : Transform;
 public var minCells: int;
@@ -63,6 +65,7 @@ function spawnCells(){
 			cellClone.rigidbody.velocity = Vector3(Random.Range(-1.0, 1.0) * 1000, Random.Range(-1, 1) * 1000, 0);
 		}
 	}
+	//var whiteCellClone : Rigidbody = Instantiate(whiteCell, Vector3(50, 50, 0), cellClone.rotation);
 }
 
 function Update () {
