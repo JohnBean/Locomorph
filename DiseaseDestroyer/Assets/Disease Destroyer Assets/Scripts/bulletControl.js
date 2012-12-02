@@ -1,5 +1,7 @@
 var pushRadius : float;
 var deathRadius : float;
+var boom  : AudioClip;//death sound
+var oneShotAudio: boolean = false;
 //var deathEmitter: ParticleEmitter;
 
 public var emitter: ParticleEmitter;
@@ -41,6 +43,9 @@ function OnCollisionEnter(collision : Collision) {
 }
 function kill(){
 	//Causes camera to shake
+	
+	AudioSource.PlayClipAtPoint(boom, transform.position);
+
 	GameObject.Find("Main Camera").GetComponent("cameraScript").shakeTime = (5.0 / Vector3.Distance(gameObject.rigidbody.position, GameObject.Find("Character").rigidbody.position));
 	GameObject.Find("Main Camera").GetComponent("cameraScript").currShakeTime = 0.0;
 	var explosionPos : Vector3 = gameObject.rigidbody.position;

@@ -1,4 +1,4 @@
-var splat : AudioSource;//death sound
+var splat : AudioClip;//death sound
 var oneShotAudio=false;//singleton for death sound
 private var maxX = 480;//bounding box
 private var minX = -480;
@@ -87,10 +87,10 @@ function kill(spawn: boolean){
 				emitter.transform.parent=null; // detach particle system
 				Destroy(emitter.gameObject, 3);
 			}
-			if(!oneShotAudio){//play death sound and destroy
-				splat.Play();
-				oneShotAudio=true;
-			}
+			//if(!oneShotAudio){//play death sound and destroy
+			if (splat) AudioSource.PlayClipAtPoint(splat, transform.position);
+				//oneShotAudio=true;
+			//}
 			if(spawn)spawnVirus();
 			//virusClone=Instantiate(virus, Vector3(rigidbody.x,rigidbody.y,rigidbody.z));
     		Destroy (gameObject);

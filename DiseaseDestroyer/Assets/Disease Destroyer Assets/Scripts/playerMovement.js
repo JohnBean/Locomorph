@@ -16,7 +16,8 @@ var burstLength : float;
 var burstAngle : float;
 var burstVel : float;
 var burstDuration : float;
-
+var shoot  : AudioClip;//shoot sound
+var push : AudioClip;//push sound
 private var burstTime = 0.0;
 private var startTime;
 var curBullet: Rigidbody;
@@ -35,6 +36,7 @@ function Update(){
 	var numBullets = GameObject.FindGameObjectsWithTag("Bullet").Length;
 	if (Input.GetButtonDown("Fire1")) {
 		if(numBullets == 0){
+		    AudioSource.PlayClipAtPoint(shoot, transform.position);
 			curBullet = Instantiate(bullet, GameObject.Find("BulletSpawn").transform.position, Quaternion(0, 0, 0, 0));
 			curBullet.velocity = Vector3.Normalize(GameObject.Find("BulletSpawn").transform.position - transform.position) * bulletSpeed;// + GameObject.Find("Character").rigidbody.velocity;
 		}
@@ -46,6 +48,7 @@ function Update(){
 		
 	}	
 	if((Input.GetButtonDown("Fire2") || Input.GetKeyDown("space")) && burstTime <= 0){
+		AudioSource.PlayClipAtPoint(push, transform.position);
 		burstTime = burstDuration;
 		GameObject.Find("PushLight").GetComponent("pushLightScript").push();
 		burstAttack();
