@@ -34,13 +34,16 @@ var startPop :float;
 var lastTime: float=0.0;
 var newTime: float;
 var maxVirus:float=0;
+var death  : AudioSource;//death sound
+var win  : AudioSource;//death sound
+var endSound: boolean = false;
 public var timeStep: float =10.0;
 function Start () {
 	for(var psudoRand=0; psudoRand<Time.time*500;psudoRand++){
 		Random.seed = psudoRand;
 	}
 	
-	numVirusStart=20;
+	numVirusStart=1;
 	
 	spawnCells();
 	for(var virusGenerator = 0; virusGenerator<numVirusStart;virusGenerator++){//spawn viruses at random locations
@@ -131,6 +134,7 @@ function Update () {
 	 //Handling game states
 	 if(state == gameState.game){
 	 	Time.timeScale = 1.0;
+	 	endSound=false;
 	 	corruptCell();
 	 	
 	 }
@@ -163,11 +167,18 @@ function Update () {
 	 }
 	 
 	 else if(state == gameState.win){
-
+		if(!endSound){
+			win.PlayOneShot(win.clip);
+			endSound=true;//end has been played
+		}
 	 }
 	 else if(state == gameState.lose){
-
+		if(!endSound){
+			death.PlayOneShot(death.clip);
+			endSound=true;//end has been played
+		}
 	 }
+	 
 }
 
 
