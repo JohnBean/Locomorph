@@ -34,7 +34,7 @@ function restart(){
 function Update(){
 	//Finds number of bullets, fires if there are none
 	var numBullets = GameObject.FindGameObjectsWithTag("Bullet").Length;
-	if (Input.GetButtonDown("Fire1")) {
+	if (Time.timeScale!=0&&Input.GetButtonDown("Fire1")) {
 		if(numBullets == 0){
 		    AudioSource.PlayClipAtPoint(shoot, transform.position);
 			curBullet = Instantiate(bullet, GameObject.Find("BulletSpawn").transform.position, Quaternion(0, 0, 0, 0));
@@ -47,7 +47,7 @@ function Update(){
 		 
 		
 	}	
-	if((Input.GetButtonDown("Fire2") || Input.GetKeyDown("space")) && burstTime <= 0){
+	if(Time.timeScale!=0&&(Input.GetButtonDown("Fire2") || Input.GetKeyDown("space")) && burstTime <= 0){
 		AudioSource.PlayClipAtPoint(push, transform.position);
 		burstTime = burstDuration;
 		GameObject.Find("PushLight").GetComponent("pushLightScript").push();

@@ -26,8 +26,9 @@ var pauseScreen : Texture;
 var splashScreen: Texture;
 var intro1 : Texture;
 var intro2 : Texture;
+var intro3 : Texture;
 var newFont : Font;
-enum gameState {splash, game, pause, win, lose, intro1, intro2};
+enum gameState {splash, game, pause, win, lose, intro1, intro2, intro3};
 var state : gameState;
 var startTime : float;
 var startPop :float;
@@ -141,26 +142,27 @@ function Update () {
 	 }
 	 else if(state == gameState.splash){
 	 	Time.timeScale = 0.0;
-	 	if(Input.GetMouseButtonDown(1)){
-	 		
+	 	if(Input.GetMouseButtonDown(1)||Input.GetKeyDown ("space")||Input.GetMouseButtonDown(2)){
 	 		state=gameState.intro1;
 	 	}
 	 }
 	 else if(state == gameState.intro1){
 	 	Time.timeScale = 0.0;
-	 	if(Input.GetMouseButtonDown(1)){
+	 	if(Input.GetMouseButtonDown(1)||Input.GetKeyDown ("space")||Input.GetMouseButtonDown(2)){
 	 		state=gameState.intro2;
-	 	} else if (Input.GetMouseButtonDown(2)){
-	 		state=gameState.splash;
-	 	}
+	 	} 
 	 }
 	 else if(state == gameState.intro2){
 	 	Time.timeScale = 0.0;
-	 	if(Input.GetMouseButtonDown(1)){
+	 	if(Input.GetMouseButtonDown(1)||Input.GetKeyDown ("space")||Input.GetMouseButtonDown(2)){
+	 		state=gameState.intro3;
+	 	} 
+	 }
+	 else if(state == gameState.intro3){
+	 	Time.timeScale = 0.0;
+	 	if(Input.GetMouseButtonDown(1)||Input.GetKeyDown ("space")||Input.GetMouseButtonDown(2)){
 	 		state=gameState.game;
 	 		startTime=Time.time;
-	 	} else if (Input.GetMouseButtonDown(2)){
-			state=gameState.intro1;
 	 	}
 	 }
 	 
@@ -211,7 +213,7 @@ function OnGUI() {
 		if(state == gameState.lose){
     	GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),loseScreen,ScaleMode.ScaleToFit,true,1.777f);
 		}
-	    if (Input.GetKeyDown ("space")) {
+	    if (Input.GetMouseButtonDown(1)||Input.GetMouseButtonDown(2)||Input.GetKeyDown ("space")) {
 	    	startTime=Time.time;
 	    	gos = GameObject.FindGameObjectsWithTag("Respawn");    
 	    	// Iterate through them and find the closest one
@@ -244,6 +246,10 @@ function OnGUI() {
     }
     if(state==gameState.intro2){
        GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),intro2,ScaleMode.ScaleToFit,true,1.777f);
+
+    }
+    if(state==gameState.intro3){
+       GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),intro3,ScaleMode.ScaleToFit,true,1.777f);
 
     }
     
