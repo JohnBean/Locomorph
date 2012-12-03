@@ -112,7 +112,7 @@ function Update () {
 	 vPercent = gos.Length/numVirusStart;
 	 gos = GameObject.FindGameObjectsWithTag("Respawn");  
 	 startPop=6973738433;
-     scoreVal=startPop-((numCellsStart-gos.length)*10000000)-(startTime*20000000);
+     scoreVal=startPop-((numCellsStart-gos.length)*10000000)-(startTime*20000000);//score calc
 	 //Conditions for changing game states
 	 if (Input.GetKeyDown("p")){	 	//Pausing and unpausing
 	 	if(state == gameState.game){
@@ -213,7 +213,12 @@ function OnGUI() {
 		if(state == gameState.lose){
     		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),loseScreen,ScaleMode.ScaleToFit,true,1.777f);
 		}
+		var longScore:long=scoreVal;
+		gos = GameObject.FindGameObjectsWithTag("Respawn");
 		GUI.Label(Rect(Screen.width/2-410,Screen.height/2,300,200),scoreVal+" "); //Score
+		GUI.Label(Rect(Screen.width/2-300,Screen.height/2,300,200),(numCellsStart-gos.length)+" ");//cells killed
+		GUI.Label(Rect(Screen.width/2-200,Screen.height/2,300,200),(startTime)+" ");//time passed
+		
 	    if (Input.GetMouseButtonDown(1)||Input.GetMouseButtonDown(2)||Input.GetKeyDown ("space")) {
 	    	startTime=Time.time;
 	    	gos = GameObject.FindGameObjectsWithTag("Respawn");    
