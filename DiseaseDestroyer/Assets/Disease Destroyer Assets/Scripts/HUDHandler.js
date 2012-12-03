@@ -45,7 +45,7 @@ function Start () {
 		Random.seed = psudoRand;
 	}
 	
-	numVirusStart=30;
+	numVirusStart=1;
 	numCellsStart=100;
 	spawnCells();
 	for(var virusGenerator = 0; virusGenerator<numVirusStart;virusGenerator++){//spawn viruses at random locations
@@ -208,11 +208,12 @@ function OnGUI() {
     //--------------------------WIN AND LOSE SCREENS-----------------------
     if(state == gameState.win || state == gameState.lose){
 		if(state == gameState.win){
-    	GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),winScreen,ScaleMode.ScaleToFit,true,1.777f);
+    		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),winScreen,ScaleMode.ScaleToFit,true,1.777f);
 		}
 		if(state == gameState.lose){
-    	GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),loseScreen,ScaleMode.ScaleToFit,true,1.777f);
+    		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),loseScreen,ScaleMode.ScaleToFit,true,1.777f);
 		}
+		GUI.Label(Rect(Screen.width/2-410,Screen.height/2,300,200),scoreVal+" "); //Score
 	    if (Input.GetMouseButtonDown(1)||Input.GetMouseButtonDown(2)||Input.GetKeyDown ("space")) {
 	    	startTime=Time.time;
 	    	gos = GameObject.FindGameObjectsWithTag("Respawn");    
@@ -273,20 +274,21 @@ function OnGUI() {
     if(state==gameState.game){
     
     
-	gos = GameObject.FindGameObjectsWithTag("Respawn");   
-	var longScore:long=scoreVal;
-	GUI.Label(Rect(Screen.width/2-410,15,300,200),"PROJECTED EARTH POPULATION: ");
-	GUI.Label(Rect(Screen.width/2-410,30,300,200),longScore+" humans surviving"); //Score
+		gos = GameObject.FindGameObjectsWithTag("Respawn");   
+		var longScore:long=scoreVal;
+		GUI.Label(Rect(Screen.width/2-410,15,300,200),"PROJECTED EARTH POPULATION: ");
+		GUI.Label(Rect(Screen.width/2-410,30,300,200),longScore+" humans surviving"); //Score
 
 	
-	GUI.backgroundColor = Color(255-(30*cPercent),1-(1*cPercent),1-(1*cPercent));//update color from red to brownred
-	GUI.HorizontalScrollbar(Rect (Screen.width/2-200,20,200,20), 0, cPercent*100,0, 100);//scale health
-	GUI.Label(Rect(((Screen.width/4))+50,2,200,200),"CELLS REMAINING: " + gos.length);//cells
-	GUI.backgroundColor = Color(0, 255-(30*vPercent),2-(2*vPercent),50);//change color based on number of viruses, fade green to teal
-	GUI.HorizontalScrollbar(Rect (Screen.width/2,20,200,20), 2000, vPercent*100,0, 100);//scale health//change virus bar based on percent remaining
-	gos = GameObject.FindGameObjectsWithTag("Finish"); //finds how many viruses are left
-	GUI.Label(Rect(((Screen.width/4)*2)+30,2,200,200),"VIRUSES REMAINING: " + gos.length);//virus
-	if(GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).slow){
-		GUI.Label(Rect(((Screen.width/2))-30,(Screen.height/4)*3,200,200),"SLOWED");//virus
-	}}
+		GUI.backgroundColor = Color(255-(30*cPercent),1-(1*cPercent),1-(1*cPercent));//update color from red to brownred
+		GUI.HorizontalScrollbar(Rect (Screen.width/2-200,20,200,20), 0, cPercent*100,0, 100);//scale health
+		GUI.Label(Rect(((Screen.width/4))+50,2,200,200),"CELLS REMAINING: " + gos.length);//cells
+		GUI.backgroundColor = Color(0, 255-(30*vPercent),2-(2*vPercent),50);//change color based on number of viruses, fade green to teal
+		GUI.HorizontalScrollbar(Rect (Screen.width/2,20,200,20), 2000, vPercent*100,0, 100);//scale health//change virus bar based on percent remaining
+		gos = GameObject.FindGameObjectsWithTag("Finish"); //finds how many viruses are left
+		GUI.Label(Rect(((Screen.width/4)*2)+30,2,200,200),"VIRUSES REMAINING: " + gos.length);//virus
+		if(GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).slow){
+			GUI.Label(Rect(((Screen.width/2))-30,(Screen.height/4)*3,200,200),"SLOWED");//virus
+		}
+	}
 }
