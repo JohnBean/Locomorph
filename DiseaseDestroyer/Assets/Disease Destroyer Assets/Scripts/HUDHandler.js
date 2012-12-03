@@ -45,7 +45,7 @@ function Start () {
 		Random.seed = psudoRand;
 	}
 	
-	numVirusStart=1;
+	numVirusStart=35;
 	numCellsStart=100;
 	spawnCells();
 	for(var virusGenerator = 0; virusGenerator<numVirusStart;virusGenerator++){//spawn viruses at random locations
@@ -215,9 +215,9 @@ function OnGUI() {
 		}
 		var longScore:long=scoreVal;
 		gos = GameObject.FindGameObjectsWithTag("Respawn");
-		GUI.Label(Rect(Screen.width/2-410,Screen.height/2,300,200),scoreVal+" "); //Score
-		GUI.Label(Rect(Screen.width/2-300,Screen.height/2,300,200),(numCellsStart-gos.length)+" ");//cells killed
-		GUI.Label(Rect(Screen.width/2-200,Screen.height/2,300,200),(startTime)+" ");//time passed
+		GUI.Label(Rect(Screen.width/2-330,Screen.height/2+45,300,200),scoreVal+" "); //Score
+		GUI.Label(Rect(Screen.width/2-25,Screen.height/2+45,300,200),(numCellsStart-gos.length)+" ");//cells killed
+		GUI.Label(Rect(Screen.width/2+225,Screen.height/2+45,300,200),(startTime)+" ");//time passed
 		
 	    if (Input.GetMouseButtonDown(1)||Input.GetMouseButtonDown(2)||Input.GetKeyDown ("space")) {
 	    	startTime=Time.time;
@@ -280,9 +280,9 @@ function OnGUI() {
     
     
 		gos = GameObject.FindGameObjectsWithTag("Respawn");   
-		var longScore:long=scoreVal;
+		//var longScore:long=scoreVal;
 		GUI.Label(Rect(Screen.width/2-410,15,300,200),"PROJECTED EARTH POPULATION: ");
-		GUI.Label(Rect(Screen.width/2-410,30,300,200),longScore+" humans surviving"); //Score
+		GUI.Label(Rect(Screen.width/2-410,30,300,200),scoreVal+" humans surviving"); //Score
 
 	
 		GUI.backgroundColor = Color(255-(30*cPercent),1-(1*cPercent),1-(1*cPercent));//update color from red to brownred
