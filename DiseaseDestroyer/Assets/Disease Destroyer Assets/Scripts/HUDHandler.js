@@ -36,8 +36,9 @@ var newTime: float;
 var maxVirus:float=0;
 var death  : AudioSource;//death sound
 var win  : AudioSource;//death sound
+var corruption  : AudioSource;//death sound
 var endSound: boolean = false;
-public var timeStep: float =10.0;
+public var timeStep: float =8.0;
 function Start () {
 	for(var psudoRand=0; psudoRand<Time.time*500;psudoRand++){
 		Random.seed = psudoRand;
@@ -78,9 +79,10 @@ function corruptCell(){
             		distance = curDistance; 
         		} 
     		}
+    		corruption.PlayOneShot(corruption.clip);
     		farthest.GetComponent(cellMovement).corrupt();
 	 		lastTime=Time.time;
-			newTime=Time.time+timeStep;
+			newTime=Time.time+timeStep+Random.Range(0,3);
 	 	}
 }
 function spawnCells(){
