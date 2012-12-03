@@ -93,9 +93,11 @@ function kill(){
 	emitter.transform.parent=null; // detach particle system
 	Destroy(emitter.gameObject, 2);
 	pushEmitter = GetComponentInChildren(ParticleEmitter);  
-    pushEmitter.emit=true;
-    pushEmitter.transform.parent=null; // detach particle system
-    Destroy(pushEmitter.gameObject, 2);
+    if(pushEmitter!=null){
+    	pushEmitter.emit=true;
+    	pushEmitter.transform.parent=null; // detach particle system
+    	Destroy(pushEmitter.gameObject, 2);
+    }
 		
 
     

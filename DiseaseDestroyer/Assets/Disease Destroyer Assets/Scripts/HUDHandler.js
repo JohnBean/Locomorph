@@ -43,7 +43,7 @@ function Start () {
 		Random.seed = psudoRand;
 	}
 	
-	numVirusStart=1;
+	numVirusStart=30;
 	
 	spawnCells();
 	for(var virusGenerator = 0; virusGenerator<numVirusStart;virusGenerator++){//spawn viruses at random locations
@@ -58,13 +58,11 @@ function Start () {
 
 function corruptCell(){
 	if(lastTime==0){
-	 		print(Time.time);
 	 		lastTime=Time.time;
 			newTime=Time.time+timeStep;
 		}
 
 	 	if(Time.time>=newTime){
-	 		print("starting corruption");
 	 		var cellArray : GameObject[];
    			cellArray = GameObject.FindGameObjectsWithTag("Respawn"); 
     		var farthest : GameObject; 
@@ -115,7 +113,6 @@ function Update () {
      scoreVal=startPop-((numCellsStart-gos.length)*10000000)-(startTime*20000000);
 	 //Conditions for changing game states
 	 if (Input.GetKeyDown("p")){	 	//Pausing and unpausing
-	 	print(state);
 	 	if(state == gameState.game){
 	 		state = gameState.pause;
 	 	}
@@ -282,7 +279,6 @@ function OnGUI() {
 	GUI.HorizontalScrollbar(Rect (Screen.width/2,20,200,20), 2000, vPercent*100,0, 100);//scale health//change virus bar based on percent remaining
 	gos = GameObject.FindGameObjectsWithTag("Finish"); //finds how many viruses are left
 	GUI.Label(Rect(((Screen.width/4)*2)+30,2,200,200),"VIRUSES REMAINING: " + gos.length);//virus
-	//print(GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).slow);
 	if(GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).slow){
 		GUI.Label(Rect(((Screen.width/2))+0,600,200,200),"SLOWED");//virus
 	}}
