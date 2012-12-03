@@ -161,8 +161,8 @@ function Update () {
 	 else if(state == gameState.intro3){
 	 	Time.timeScale = 0.0;
 	 	if(Input.GetMouseButtonDown(1)||Input.GetKeyDown ("space")||Input.GetMouseButtonDown(2)){
-	 		//state=gameState.game;
-	 		state=gameState.win;
+	 		state=gameState.game;
+	 		//state=gameState.win;
 	 		startTime=Time.time;
 	 	}
 	 }
