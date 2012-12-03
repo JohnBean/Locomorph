@@ -275,8 +275,8 @@ function OnGUI() {
     
 	gos = GameObject.FindGameObjectsWithTag("Respawn");   
 	var longScore:long=scoreVal;
-	GUI.Label(Rect(Screen.width/2-500,15,300,200),"PROJECTED EARTH POPULATION: ");
-	GUI.Label(Rect(Screen.width/2-500,30,300,200),longScore+" humans surviving"); //Score
+	GUI.Label(Rect(Screen.width/2-410,15,300,200),"PROJECTED EARTH POPULATION: ");
+	GUI.Label(Rect(Screen.width/2-410,30,300,200),longScore+" humans surviving"); //Score
 
 	
 	GUI.backgroundColor = Color(255-(30*cPercent),1-(1*cPercent),1-(1*cPercent));//update color from red to brownred
@@ -287,6 +287,6 @@ function OnGUI() {
 	gos = GameObject.FindGameObjectsWithTag("Finish"); //finds how many viruses are left
 	GUI.Label(Rect(((Screen.width/4)*2)+30,2,200,200),"VIRUSES REMAINING: " + gos.length);//virus
 	if(GameObject.FindGameObjectWithTag("Player").GetComponent(playerMovement).slow){
-		GUI.Label(Rect(((Screen.width/2))+0,600,200,200),"SLOWED");//virus
+		GUI.Label(Rect(((Screen.width/2))-30,(Screen.height/4)*3,200,200),"SLOWED");//virus
 	}}
 }

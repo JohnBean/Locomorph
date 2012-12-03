@@ -105,7 +105,7 @@ function startSlow(){
 		slow=true;
 		slowTime=Time.time;
 		speedSlowFactor=1;
-		accelSlowFactor=2.5;
+		accelSlowFactor=3;
 	}
 }
 function endSlow(){
