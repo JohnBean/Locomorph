@@ -161,7 +161,8 @@ function Update () {
 	 else if(state == gameState.intro3){
 	 	Time.timeScale = 0.0;
 	 	if(Input.GetMouseButtonDown(1)||Input.GetKeyDown ("space")||Input.GetMouseButtonDown(2)){
-	 		state=gameState.game;
+	 		//state=gameState.game;
+	 		state=gameState.win;
 	 		startTime=Time.time;
 	 	}
 	 }
@@ -213,9 +214,10 @@ function OnGUI() {
 		if(state == gameState.lose){
     		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height),loseScreen,ScaleMode.ScaleToFit,true,1.777f);
 		}
-		var longScore:long=scoreVal;
 		gos = GameObject.FindGameObjectsWithTag("Respawn");
-		GUI.Label(Rect(Screen.width/2-330,Screen.height/2+45,300,200),scoreVal+" "); //Score
+		var longScore2:long;
+		longScore2=scoreVal;
+		GUI.Label(Rect(Screen.width/2-330,Screen.height/2+45,300,200),longScore2+" "); //Score
 		GUI.Label(Rect(Screen.width/2-25,Screen.height/2+45,300,200),(numCellsStart-gos.length)+" ");//cells killed
 		GUI.Label(Rect(Screen.width/2+225,Screen.height/2+45,300,200),(startTime)+" ");//time passed
 		
@@ -280,9 +282,10 @@ function OnGUI() {
     
     
 		gos = GameObject.FindGameObjectsWithTag("Respawn");   
-		//var longScore:long=scoreVal;
+		var longScore:long;
+		longScore=scoreVal;
 		GUI.Label(Rect(Screen.width/2-410,15,300,200),"PROJECTED EARTH POPULATION: ");
-		GUI.Label(Rect(Screen.width/2-410,30,300,200),scoreVal+" humans surviving"); //Score
+		GUI.Label(Rect(Screen.width/2-410,30,300,200),longScore+" humans surviving"); //Score
 
 	
 		GUI.backgroundColor = Color(255-(30*cPercent),1-(1*cPercent),1-(1*cPercent));//update color from red to brownred
